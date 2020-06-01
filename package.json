@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
-    ,"build": "postcss public/stylesheets/tailwind.css -o public/build/tailwind.css"
+    "start": "node ./bin/www",
+    "build": "postcss public/stylesheets/tailwind.css -o public/build/tailwind.css"
   },
   "dependencies": {
     "autoprefixer": "^9.8.0",
@@ -14,6 +14,7 @@
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
+    "mysql": "^2.18.1",
     "postcss-cli": "^7.1.1",
     "tailwindcss": "^1.4.6"
   }

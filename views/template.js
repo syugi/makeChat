@@ -15,7 +15,7 @@ exports.HTML = function(title, link, body , script){
 		${link}
 
 		<!--tailwind-->
-		<!-- <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"> -->
+		<link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
 
 	  </head>
 	  <body>
