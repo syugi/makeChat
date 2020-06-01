@@ -10,73 +10,49 @@ const db =  mysql.createConnection({
 }); 
 
 //데이터베이스 생성!
-//CREATE SCHEMA  HKNS: 
+//CREATE SCHEMA  CHAT: 
 
-//견적요청리스트 테이블 생성 
-const create_reqQuoteList = `
-CREATE TABLE REQ_QUOTE_LIST(
-              REQ_ID          INT NOT NULL
-            , CUST_NM     varchar(20)  not null
-            , TEL_NO      varchar(20)  not null
-            , REQ_DATE    varchar(20) 
-            , EMAIL_ID    varchar(160)
-            , EMAIL_DOWN  varchar(200)
-            , UPJONG      varchar(20) 
-            , BOILER_TYPE varchar(20) 
-            , POST_CODE   varchar(6)  
-            , ADDR        varchar(200) 
-            , DTL_ADDR    varchar(300) 
-            , EXT_ADDR    varchar(300) 
-            , DESCR       varchar(1000) 
-            , CUST_TYPE   varchar(20)
+//프로젝트리스트 테이블 생성 
+const create_projectList = `
+CREATE TABLE PROJECT_LIST(
+              PRJ_ID          INT NOT NULL AUTO_INCREMENT
+            , PRJ_NM     varchar(20)  not null   
             , CREATED_DT DATETIME not null default now()
-            , primary key(REQ_ID)
+            , primary key(PRJ_ID)
          )
-         comment = '견적요청리스트'
+         comment = '프로젝트 리스트'
          default charset = utf8
          engine=InnoDB `;
 
-//첨부파일 테이블 생성 
-const create_reqFileList = `
-CREATE TABLE ATCH_FILE_LIST(
-              SEQ                     INT NOT NULL AUTO_INCREMENT
-            , FILE_SEQ            INT  NOT NULL
-            , REQ_ID                INT NOT NULL
-            , ORG_FILE_NM    varchar(200)  
-            , STR_FILE_NM     varchar(200) 
-            , FILE_PATH          varchar(50)
-            , FILE_SIZE           int(15) 
-            , FILE_TYPE          varchar(50)
-            , FILE_DESCR       varchar(500) 
-            , USE_YN              varchar(1)  
+const create_chatList = `
+CREATE TABLE CHAT_LIST(
+              CHAT_ID                     INT NOT NULL AUTO_INCREMENT
+            , PRJ_ID            INT  NOT NULL
+            , PROF_ID                INT NOT NULL
+           , CHAT_SEQ           varchar(10)
+            , CHAT_TYPE    varchar(15)  
+            , CHAT_MSG     varchar(2000) 
             , CREATED_DT    DATETIME not null default now()
-            , primary key(SEQ)
+            , primary key(CHAT_ID)
          )
-         comment = '첨부파일리스트'
+         comment = '채팅리스트'
          default charset = utf8
          engine=InnoDB `;
 
-//문자발송 테이블 생성 
-const create_sendMsgList = `
-CREATE TABLE SEND_MSG_LIST(
-              SEQ          INT NOT NULL AUTO_INCREMENT
-            , REQ_ID       INT NOT NULL
-            , REQ_DATE     varchar(20)  
-            , TO_TELNO     varchar(15) 
-            , FROM_TELNO   varchar(15)
-            , SUBJECT      varchar(200) 
-            , CONTENTS     varchar(2000)
-            , MSG_TYPE     varchar(20) 
-            , SEND_YN      varchar(2)  
-            , SEND_DT      DATETIME
-           , ERR_MSG   varchar(2000)
+//프로필리스트 테이블 생성 
+const create_profList = `
+CREATE TABLE PROF_LIST(
+              PROF_ID   INT NOT NULL AUTO_INCREMENT
+            , PRJ_ID       INT NOT NULL
+            , PROF_NM   varchar(100)
+            , POSITION     varchar(3) 
+            , FILE_PATH          varchar(500)
             , CREATED_DT   DATETIME not null default now()
-            , primary key(SEQ)
+            , primary key(PROF_ID)
          )
-         comment = '문자발송리스트'
+         comment = '프로필리스트'
          default charset = utf8
          engine=InnoDB `;
-
 
 db.connect(function(err) {
   if (err) throw err;
@@ -87,13 +63,13 @@ db.connect(function(err) {
   //dropTable("SEND_MSG_LIST");
   
   //견적요청 테이블  생성
-  createTable("REQ_QUOTE_LIST", create_reqQuoteList);
+  createTable("PROJECT_LIST", create_projectList);
   
   //첨부파일 테이블  생성
-  createTable("ATCH_FILE_LIST", create_reqFileList);
+  createTable("CHAT_LIST", create_chatList);
   
   //문자발송 테이블  생성
-  createTable("SEND_MSG_LIST", create_sendMsgList);
+  createTable("PROF_LIST", create_profList);
 
 });
 
