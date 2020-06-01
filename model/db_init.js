@@ -16,7 +16,8 @@ const db =  mysql.createConnection({
 const create_projectList = `
 CREATE TABLE PROJECT_LIST(
               PRJ_ID          INT NOT NULL AUTO_INCREMENT
-            , PRJ_NM     varchar(20)  not null   
+            , PRJ_NM     varchar(20)   not null   
+           , PRJ_DESC         varchar(1000) 
             , CREATED_DT DATETIME not null default now()
             , primary key(PRJ_ID)
          )
@@ -58,7 +59,7 @@ db.connect(function(err) {
   if (err) throw err;
   console.log("DB Connected!");
 	
-   //dropTable("REQ_QUOTE_LIST");
+  //dropTable("PROJECT_LIST");
   //dropTable("ATCH_FILE_LIST");
   //dropTable("SEND_MSG_LIST");
   
