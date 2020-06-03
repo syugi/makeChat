@@ -64,7 +64,7 @@ db.connect(function(err) {
   //dropTable("SEND_MSG_LIST");
   
   //견적요청 테이블  생성
-  createTable("PROJECT_LIST", create_projectList);
+  //createTable("PROJECT_LIST", create_projectList);
   
   //첨부파일 테이블  생성
   createTable("CHAT_LIST", create_chatList);
