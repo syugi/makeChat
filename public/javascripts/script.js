@@ -1,9 +1,12 @@
 const modal         = document.getElementById('projectModal');
 const projectList   = document.querySelector('project_list');
+const title         = document.getElementById('modalTitle');
+const prjId         = document.getElementById('modalPrjId');
+const prjNm         = document.getElementById('mopdalPrjNm');
+const desc          = document.getElementById('modalPrjDesc');
+
 
 function validate(){
-  var prjNm        = document.getElementById('prjNm');
-  
   if(prjNm.value==""){
      alert("프로젝트 명을 입력해 주세요");
      prjNm.focus();
@@ -11,7 +14,28 @@ function validate(){
   }
 }
 
-const openModal = () => {
+const openModal = (selectedPrjId) => {
+
+  //수정
+  if(selectedPrjId != null){
+    
+   const li         = document.getElementById(selectedPrjId);
+    
+    prjId.value     = selectedPrjId;
+    prjNm.value     = li.querySelector('div.prj_nm').innerText;
+    desc.value      = li.querySelector('div.prj_desc').innerText;
+    title.innerHTML = "프로젝트 수정";
+    
+  //생성
+  }else{
+
+    prjId.value     = "";
+    prjNm.value     = "NEW PROJECT";
+    desc.value      = "";
+    title.innerHTML = "프로젝트 생성";
+
+  }
+  
   modal.classList.remove("hidden");
 }
 
@@ -19,39 +43,9 @@ const closeModal = () => {
   modal.classList.add("hidden");
 }
 
-const handleModifyProject = (e) =>{
-  const btn = e.target;
- // alert(btn.id); 
-  
- //  console.log(event.target);
-  // const prjNm   = document.getElementById('prjNm');
-  // prjNm.value = "aaa";
-  //openModal();
-}
-
-const handleDeleteProject = (e) =>{
-  const btn = e.target;
-  const li  = btn.parentNode;
-  alert(li.id); 
-  //projectList.removeChild(e.target.parentElement)
-}
 
 function init(){
   
-  //프로젝트 수정 
-  let btnModifys = document.querySelectorAll('.btn_modify_prj');
-
-	btnModifys.forEach((node, index) => {
-    node.addEventListener("click", handleModifyProject);
-	});
-  
-  //프로젝트 삭제
-  let btnDeletes = document.querySelectorAll('.btn_delete_prj');
-
-	btnDeletes.forEach((node, index) => {
-    node.addEventListener("click", handleDeleteProject);
-	});
-  
 }
 
 

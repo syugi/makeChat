@@ -1,45 +1,38 @@
 
 module.exports = {
 	
-  html : function(prjList){
-		  return main(prjList)
-           + projectModal();
+  html : function(data){
+		  return main(data)
+           + modal();
   }
 }
 
-function main(prjList){
+function main(data){
   
-  let list = `<ul class="flex flex-col bg-gray-300 p-4 project_list">`;
-  prjList.forEach((data)=>{
-    list += `<li class="border-gray-400 flex flex-row mb-2" id=${data.PRJ_ID} >`;
-    list += `<div class="select-none cursor-pointer bg-gray-200 rounded-md flex flex-1 items-center p-4  transition duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
-                <div class="flex flex-col rounded-md w-10 h-10 bg-gray-300 justify-center items-center mr-4">${data.PRJ_ID}</div>
-                <div class="flex-1 pl-1 mr-16" onClick="location.href='/editchat?id=${data.PRJ_ID}'">
-                  <div class="font-medium mb-2 prj_nm">${data.PRJ_NM}</div>
-                  <div class="text-gray-600 text-sm prj_desc">${data.PRJ_DESC}</div>
-                </div>
-                <div class="text-gray-600 text-xs px-4 py-3 mr-2 bg-gray-300" onClick="openModal(${data.PRJ_ID})">수정</div>
-                <div class="text-gray-600 text-xs px-4 py-3 bg-gray-300" onClick="location.href='/delete?id=${data.PRJ_ID}'">삭제</div>
-                <!--<div class="text-gray-600 text-xs">6:00 AM</div>-->
-            </div></li>`
-    
-  });
-  list += "</ul>";
-    
   return `
         <div class="wrap">
               <div class="px-4 py-6">
-                <span class="text-lg">프로젝트 리스트</span>
-                <button type="button" class="bg-blue-600 text-white hover:bg-blue-dark font-bold py-2 px-4 rounded m-3 cursor-pointer" onClick="openModal()">채팅 프로젝트 만들기 </button> 
-                <div class="w-full md:w-2/3">
-                  ${list}
+                <p class="text-lg mb-2">${data.PRJ_NM}</p>
+                <p class="">${data.PRJ_DESC}</p>
+                <div class="w-full md:w-2/3" style="width:400px;">
+                  <ul class="chatList bg-gray-200 overflow-auto" style="height:600px;">
+                  </ul>
+                  <form class="chatInputForm flex flex-col  bg-gray-200 clear-both">
+                    <div class="flex h-8">
+                      <div>
+                      
+                      </div>
+                      <input type="text" class="border border-blue w-10/12">
+                      <button class="w-2/12">보내기</button>
+                    </div>
+                  </form>
                 </div>
               </div>
         </div>
       `;
 }
 
-function projectModal(){
+function modal(){
     return `
     <div id="projectModal" style=" background-color: rgba(0, 0, 0, 0.8)" class="fixed z-40 top-0 right-0 left-0 bottom-0 h-full w-full hidden">
 			<div class="p-4 max-w-xl mx-auto relative absolute left-0 right-0 overflow-hidden mt-24">
