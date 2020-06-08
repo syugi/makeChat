@@ -117,3 +117,10 @@ a {
     padding: 20px;
     border: 1px solid #888;                   */
 }
+
+.active {
+  padding: 0.25rem;
+  border-width: 4px;
+  border-color: #3182ce;
+  border-radius: 9999px;
+}

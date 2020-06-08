@@ -1,12 +1,8 @@
 const modal         = document.getElementById('projectModal');
-const projectList   = document.querySelector('project_list');
-const title         = document.getElementById('modalTitle');
-const prjId         = document.getElementById('modalPrjId');
-const prjNm         = document.getElementById('mopdalPrjNm');
-const desc          = document.getElementById('modalPrjDesc');
-
 
 function validate(){
+  const prjNm         = document.getElementById('mopdalPrjNm');
+  
   if(prjNm.value==""){
      alert("프로젝트 명을 입력해 주세요");
      prjNm.focus();
@@ -16,6 +12,13 @@ function validate(){
 
 const openModal = (selectedPrjId) => {
 
+  const title         = document.getElementById('modalTitle');
+  const prjId         = document.getElementById('modalPrjId');
+  const prjNm         = document.getElementById('mopdalPrjNm');
+  const desc          = document.getElementById('modalPrjDesc');
+  const desc          = document.getElementById('modalPrjDesc');
+
+  
   //수정
   if(selectedPrjId != null){
     
@@ -43,9 +46,7 @@ const closeModal = () => {
   modal.classList.add("hidden");
 }
 
-
 function init(){
-  
 }
 
 

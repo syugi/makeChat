@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
       const title  = "Make Chat";
       const link   = ``;
       const body  = `${editChat.html(result[0])}`;
-      const script = `<script src="/javascripts/script.js"></script> `;
+      const script = `<script src="/javascripts/editChat.js"></script> `;
       const html   = template.HTML(title,link, body,script);
       res.send(html);
       

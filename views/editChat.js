@@ -9,23 +9,49 @@ module.exports = {
 
 function main(data){
   
+  const chatTypeList = [
+     {type : 'img'    , name : '이미지'    , imgPath : "https://randomuser.me/api/portraits/women/12.jpg"}
+    ,{type : 'youtube', name : '유튜브링크' , imgPath : "https://randomuser.me/api/portraits/women/12.jpg"}
+    ,{type : 'profile', name : '선생님'    , imgPath : "https://randomuser.me/api/portraits/women/12.jpg"}
+    ,{type : 'profile', name : '학생'      , imgPath : "https://randomuser.me/api/portraits/women/12.jpg"}
+  ];
+  
+  //    		<!-- <div class="p-1 border-4 border-blue-600 rounded-full"> -->
+  let chatTypes = "";
+  chatTypeList.forEach((data)=>{
+    chatTypes += `<div class="text-sm text-center mx-2">`;
+		chatTypes += `	<div class="chatType">				`;
+		chatTypes += `			<div class="w-12 h-12 relative flex flex-shrink-0"> `;
+    chatTypes += `       <img class="shadow-md rounded-full w-full h-full object-cover" src=${data.imgPath} alt=""> `;
+		chatTypes += `			</div></div><p class="pt-2">${data.name}</p></div>`;
+  });
+    
+
+  
+    
   return `
-        <div class="wrap">
+        <div class="wrap bg-gray-300">
               <div class="px-4 py-6">
                 <p class="text-lg mb-2">${data.PRJ_NM}</p>
                 <p class="">${data.PRJ_DESC}</p>
                 <div class="w-full md:w-2/3" style="width:400px;">
-                  <ul class="chatList bg-gray-200 overflow-auto" style="height:600px;">
+                  <ul class="chatList bg-gray-100 overflow-auto" style="height:600px;">
                   </ul>
-                  <form class="chatInputForm flex flex-col  bg-gray-200 clear-both">
-                    <div class="flex h-8">
-                      <div>
-                      
-                      </div>
-                      <input type="text" class="border border-blue w-10/12">
-                      <button class="w-2/12">보내기</button>
-                    </div>
-                  </form>
+									<form class="chatInputForm flex flex-col clear-both bg-white">
+										<div class="chatTypeList flex flex-row p-2 overflow-auto w-0 min-w-full">
+											${chatTypes}   
+                      <button class="flex flex-shrink-0 focus:outline-none block text-gray-500 w-8 mx-2" type="button">
+                        <svg class="w-full h-full fill-current" viewBox="0 0 24 24">
+                           <path d="M17 11a1 1 0 0 1 0 2h-4v4a1 1 0 0 1-2 0v-4H7a1 1 0 0 1 0-2h4V7a1 1 0 0 1 2 0v4h4z"></path>
+                        </svg>
+                      </button>
+                    </div>  
+                    <div class="h-10">
+											<!-- <img src="http://placehold.it/16x16" alt="" class="float-left w-1/12"/> -->
+											<input type="text" class="border border-blue float-left w-10/12 h-full">
+											<button class="float-left p-2 w-2/12">보내기</button>
+										</div>
+									</form>
                 </div>
               </div>
         </div>
