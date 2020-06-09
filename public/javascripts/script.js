@@ -1,4 +1,4 @@
-const modal         = document.getElementById('projectModal');
+const modal         = document.querySelector('.projectModal');
 
 function validate(){
   const prjNm         = document.getElementById('mopdalPrjNm');

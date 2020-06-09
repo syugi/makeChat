@@ -119,8 +119,90 @@ a {
 }
 
 .active {
-  padding: 0.25rem;
+  /* padding: 0.25rem; */
   border-width: 4px;
   border-color: #3182ce;
   border-radius: 9999px;
+}
+
+
+
+
+.chatList{
+}
+
+.chatList li{
+  padding:7px; 
+  margin:5px;
+}
+
+
+.chatMsg{ 
+  /*.chatList span, a , .Img, .Youtu{*/
+  padding:7px; 
+  margin:0px 70px 15px;
+}
+
+.leftMsg{
+  float:left;
+  background:#c3dafe;
+  clear: both;
+  border-radius: 0.1rem 1rem 1rem 1rem;
+  margin-left: 70px;
+}
+
+.rightMsg{
+   float:right;
+   background:#feb2b2;
+   clear: both;
+   border-radius: 1rem 0.1rem 1rem 1rem; /*border-radius: 1rem 1rem 0.1rem;*/
+}
+
+.Img, .Youtu {
+  clear: both;
+  border-radius: 1rem;
+  width:80%;
+  clear: both;
+} 
+
+
+.Btn{
+  width: 100px;
+  display: block;
+  background:#e3e5e7;
+  clear: both;
+  padding: 4px 4px;
+  border-radius: 0.25rem;
+  margin: 0 auto;
+} 
+
+
+.continueMsg:hover{
+   background:#718096;
+} 
+
+
+.profile{
+  clear: both;
+  display:flex;
+}
+
+.profileImg{
+  width:60px;
+  height:60px;
+  	border-radius: 9999px;
+  /* border-radius: 1.3rem 1.3rem; */
+  clear: both;
+}
+.profileName{
+  clear: both;
+  margin-left:10px;
+}
+
+.left{
+  float:left;
+}
+
+.right{
+  float:right;
 }

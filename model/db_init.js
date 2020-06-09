@@ -67,13 +67,26 @@ db.connect(function(err) {
   //createTable("PROJECT_LIST", create_projectList);
   
   //첨부파일 테이블  생성
-  createTable("CHAT_LIST", create_chatList);
+  //createTable("CHAT_LIST", create_chatList);
   
   //문자발송 테이블  생성
-  createTable("PROF_LIST", create_profList);
+ // createTable("PROF_LIST", create_profList);
 
+  addDefaultProfile('1', '선생님','L', 'https://randomuser.me/api/portraits/women/12.jpg');
+  addDefaultProfile('1', '학생' ,'R', 'https://randomuser.me/api/portraits/women/12.jpg');
 });
 
+
+function addDefaultProfile(prjId, profNm, position, filePath){
+   const insertProf = "INSERT INTO PROF_LIST ( PROF_ID, PRJ_ID, PROF_NM, POSITION, FILE_PATH ) VALUES (0, ?, ?, ?, ?)";
+
+      db.query(insertProf, [ prjId, profNm, position, filePath], function(error, result){
+        if(error){
+          throw error;
+        }
+        console.log(`[Insert E n d] 프로필 [${profNm}]이(가) 추가되었습니다`);
+      });
+}
 
 /*
  * 테이블 생성

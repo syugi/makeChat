@@ -77,4 +77,20 @@ router.post('/save', function(req, res, next){
   
 });
 
+router.post('/modify', function(req, res, next){
+  
+  const post = req.body;
+	console.log("post --> "+JSON.stringify(post));
+  
+  const updateProject = "UPDATE PROJECT_LIST SET PRJ_NM = ? , PRJ_DESC = ? WHERE PRJ_ID = ?";
+    db.query(updateProject, [ post.prjNm, post.prjDesc, post.prjId], function(error, result){
+      if(error){
+        console.error("Project Insert Error!!");
+        throw error;
+      }
+        res.redirect( `/editchat?id=${post.prjId}`);
+    });  
+});
+
+
 module.exports = router;
