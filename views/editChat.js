@@ -1,4 +1,3 @@
-
 module.exports = {
 	
   html : function(prjData,profData,chatData){
@@ -12,17 +11,17 @@ function main(prjData,profData,chatData){
 	console.log(profData);
   console.log(chatData);
   
-  let profList = "";
+  let list = "";
   profData.forEach((data, i)=>{
     const active = i==0?'active':'';
-    profList += `<div class="text-sm text-center mx-2">`;
-		profList += `			<div class="w-12 h-12 relative flex flex-shrink-0" > `;
-    profList += `       <img class="profImg shadow-md rounded-full w-full h-full object-cover ${active}" src=${data.FILE_PATH} alt=""> `;
-		profList += `			</div>`;
-    profList += `			<p class="pt-2">${data.PROF_NM}</p>`;
-    profList += `</div>`;
+    list += `<div class="text-sm text-center mx-2">`;
+		list += `			<div class="profDiv w-12 h-12 relative flex flex-shrink-0">`;
+    list += `      <img class="profImg shadow-md rounded-full w-full h-full object-cover ${active}" src=${data.FILE_PATH} alt="" onclick="selectProf( this,'${data.PROF_ID}','${data.PROF_NM}','${data.POSITION}','${data.FILE_PATH}')">`;
+		list += `			</div>`;
+    list += `			<p class="pt-2">${data.PROF_NM}</p>`;
+    list += `</div>`;
   });  
-    
+  
   return `
         <div class="wrap bg-gray-300">
 <button type="button" class="bg-gray-800 text-white hover:bg-blue-dark font-bold py-2 px-4 rounded cursor-pointer" onclick="location.href='/'">돌아가기</button>
@@ -34,8 +33,9 @@ function main(prjData,profData,chatData){
                   <ul class="chatList bg-gray-100 overflow-auto" style="height:600px;">
                   </ul>
 									<form method="POST" action="/editchat/save" class="chatInputForm flex flex-col clear-both bg-white">
+                    <input class="hidden" name="prjId" value="${prjData.PRJ_ID}">
 										<div class="profList flex flex-row p-2 overflow-auto w-0 min-w-full">
-											${profList}   
+											${list}   
                       <button class="flex flex-shrink-0 focus:outline-none block text-gray-500 w-8 mx-2" type="button">
                         <svg class="w-full h-full fill-current" viewBox="0 0 24 24">
                            <path d="M17 11a1 1 0 0 1 0 2h-4v4a1 1 0 0 1-2 0v-4H7a1 1 0 0 1 0-2h4V7a1 1 0 0 1 2 0v4h4z"></path>
@@ -45,7 +45,7 @@ function main(prjData,profData,chatData){
                     <div class="h-10"> 
 											<img src="http://placehold.it/16x16" alt="" class="float-left w-1/12"/>
 											<input type="text" id="chatInput" class="border border-blue float-left w-9/12 h-full">
-											<button class="float-left p-2 w-2/12" id="btnAddchat">등록</button>
+											<button class="float-left p-2 w-2/12" id="btnAddChat">등록</button>
 										</div>
 											
 										<button type="submit" name="submit" class="float-right bg-blue-400 text-white hover:bg-blue-dark font-bold py-2 px-4 m-3 rounded cursor-pointer">채팅저장</button>

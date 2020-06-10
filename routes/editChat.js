@@ -33,18 +33,52 @@ router.get('/', function(req, res, next) {
               throw error;
             }
 
-            console.log(chatData);
-
+            //console.log(chatData);
+                  
             const title  = "Make Chat";
             const link   = ``;
             const body  = `${editChat.html(prjData[0],profData,chatData)}`;
-            const script = `<script src="/javascripts/editChat.js"></script> `;
+            const script = `<script src="/javascripts/editChat.js"></script>
+                            <script>
+                               settingProf('${profData[0].PROF_ID}','${profData[0].PROF_NM}','${profData[0].POSITION}','${profData[0].FILE_PATH}');
+
+                               settingChat(chatData);
+                            </script>
+                            `;
             const html   = template.HTML(title,link, body,script);
             res.send(html);
         }); 
      }); 
    });  
 
+});
+
+router.post('/save', function(req, res, next){
+	
+	
+ 
+  //견적요청
+	const post = req.body;
+	console.log("post --> "+JSON.stringify(post));
+	
+  //res.redirect( `/editchat?id=${post.prjId}`);
+  
+  // // ID 생성
+  // const selectReqId = "SELECT MAX(IFNULL(REQ_ID,0))+1 AS REQ_ID FROM REQ_QUOTE_LIST";
+  // db.query(selectReqId, [], function(error, result){
+  //   if(error){
+  //     console.error("ID 생성 오류");
+  //     throw error;
+  //   }
+    
+  //   // let reqId = result[0].REQ_ID;
+  //   //  if(is.empty(reqId)){
+  //   //    reqId = 0;
+  //   //  }
+  //   // console.log("생성된 ID : "+reqId);
+  //   // const reqDate  =  dateformat.asString('yyyyMMdd', new Date()); //요청일자
+  // });       
+  
 });
 
 module.exports = router;

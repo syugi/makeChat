@@ -1,7 +1,10 @@
 const profImgs   = document.querySelectorAll('.profImg');
 const modal      = document.querySelector('.projectModal');  
-const chatList   = document.querySelector('.chatList');  
-    
+const chatList   = document.querySelector('.chatList');  
+
+let _activeProf = {};
+let _chats      = [];
+
 const openModal = () => {
   modal.classList.remove("hidden");
 }
@@ -10,32 +13,40 @@ const closeModal = () => {
   modal.classList.add("hidden");
 }
 
-const selectProfImg = (e) => {
-  
-  const div = e.target;
-  
-  //alert("여기!!  "+JSON.stringify(profImgs));
-  
-  //다른선택 해제 
+const settingProf = (profId, profNm, position, filePath) => {
+  _activeProf = {
+    profId,profNm,position,filePath
+  }
+}
+
+const settingChat = (chatData) =>{
+  //alert(chatData);
+}
+
+const selectProf = (div, profId, profNm, position, filePath) =>{
+  const profDiv = div.closest('.profDiv');
+
+  //alert(JSON.stringify(_activeProf));
+
+  //다른선택 해제 
   profImgs.forEach((data) => {
     data.classList.remove("active");
   });
-
+  
   div.classList.add("active");   
   
-  // alert("여기!!  "+e.target);
+  _activeProf   = {profId,profNm,position,filePath};
 }
 
 const handleBtnAddChat = (e) => {
 	e.preventDefault();
 	const input      = document.getElementById('chatInput'); 
-	//alert("여기!!"+input.value);
-  
+
   const chatMsg  = input.value;
-  let chatType = "Msg";  //테스트 하드코딩 
-  let position = "left"; //테스트 하드코딩 
-  let profId   = "1";     //테스트 하드코딩 
-     
+  let chatType = "Msg"; 
+  let position = _activeProf.position;
+  let profId   = _activeProf.profId;
+  
   //유튜브 형식인 경우
   if(chatMsg.indexOf("youtu.be") > -1){
      chatType = "Youtu";
@@ -47,27 +58,37 @@ const handleBtnAddChat = (e) => {
 }
 
 /**
- * 채팅 추가 
+ * 채팅 표시  
  *
  * @param msg        : 메세지 내용
+ * @param type       : 타입(버튼-Btn, 이미지-Img, 유튜브-Youtu, 메세지-Msg)
  * @param position   : 위치(left,right)
- * @param type       : 타입(버튼-B, 이미지-I, 유튜브-Y, 메세지-T)
  * @param profId     : 프로필 ID
  */
-function addChat(msg,type,position, profId){
+function addChat(msg, type, position, profId){
   
   if(msg == "" || msg == null){
     return;
   }
   
+  const chatObj = {
+     profId 
+    ,chatSeq : _chats.length
+    ,position
+    ,chatType : type
+    ,chatMsg : msg,
+  }
+  _chats.push(chatObj);
+  //alert(JSON.stringify(_chats));
+  
   //profId가 전에 보낸 채팅 id랑 같지 않으면 프로필 전송하기 
   const liList = document.querySelectorAll(".chatList li");
   if(liList.length == 0){
-    setProfile(profId);
+    setProfile();
   }else{
     const prevProfId = liList[liList.length-1].value;
     if(prevProfId == null || profId != prevProfId){ 
-      setProfile(profId);
+      setProfile();
     }
   }
   
@@ -158,28 +179,13 @@ function addChat(msg,type,position, profId){
 }
 
 /**
- * 프로필 표시 
- *
- * @param profId   : 프로필 ID 
- * 
+ * 프로필 표시  
  */
-function setProfile(profId){
+function setProfile(){
 
-    //프로필 정보 조회 
-    // const profInfo = getProfInfo(profId);
-
-    // if(profInfo == null){
-    //   return;
-    // }
-
-    // const imgPath     = profInfo.imgPath;  //프로필 이미지 경로
-    // const profName    = profInfo.profName; //프로필 이름 
-    // const position    = profInfo.position; //위치(left,right)
-    
-    //테스트 하드코딩 
-    const imgPath     = 'https://randomuser.me/api/portraits/women/12.jpg';
-    const profName    = '선생님';
-    const position    = 'left';
+    const imgPath     = _activeProf.filePath;
+    const profName    = _activeProf.profNm;
+    const position    = _activeProf.position;
     
     //프로필 추가 
     const li = document.createElement("li");
@@ -211,11 +217,7 @@ function setProfile(profId){
 
 function init(){
   
-  profImgs.forEach((data) => {
-    data.addEventListener("click", selectProfImg);
-  });
-	
-	const btn      = document.getElementById('btnAddchat');
+	const btn      = document.getElementById('btnAddChat');
 	btn.addEventListener("click", handleBtnAddChat);
 }
 

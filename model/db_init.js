@@ -46,7 +46,7 @@ CREATE TABLE PROF_LIST(
               PROF_ID   INT NOT NULL AUTO_INCREMENT
             , PRJ_ID       INT NOT NULL
             , PROF_NM   varchar(100)
-            , POSITION     varchar(3) 
+            , POSITION     varchar(10) 
             , FILE_PATH          varchar(500)
             , CREATED_DT   DATETIME not null default now()
             , primary key(PROF_ID)
@@ -61,7 +61,7 @@ db.connect(function(err) {
 	
   //dropTable("PROJECT_LIST");
   //dropTable("ATCH_FILE_LIST");
-  //dropTable("SEND_MSG_LIST");
+  //dropTable("PROF_LIST");
   
   //견적요청 테이블  생성
   //createTable("PROJECT_LIST", create_projectList);
@@ -70,10 +70,10 @@ db.connect(function(err) {
   //createTable("CHAT_LIST", create_chatList);
   
   //문자발송 테이블  생성
- // createTable("PROF_LIST", create_profList);
+  //createTable("PROF_LIST", create_profList);
 
-  addDefaultProfile('1', '선생님','L', 'https://randomuser.me/api/portraits/women/12.jpg');
-  addDefaultProfile('1', '학생' ,'R', 'https://randomuser.me/api/portraits/women/12.jpg');
+  addDefaultProfile('1', '선생님','left', 'https://randomuser.me/api/portraits/women/12.jpg');
+  addDefaultProfile('1', '학생' ,'right', 'https://randomuser.me/api/portraits/women/12.jpg');
 });
 
 
