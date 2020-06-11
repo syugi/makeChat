@@ -32,8 +32,7 @@ function main(prjData,profData,chatData){
                 <div class="w-full md:w-2/3" style="width:400px;">
                   <ul class="chatList bg-gray-100 overflow-auto" style="height:600px;">
                   </ul>
-									<form method="POST" action="/editchat/save" class="chatInputForm flex flex-col clear-both bg-white">
-                    <input class="hidden" name="prjId" value="${prjData.PRJ_ID}">
+									<div class="chatInputForm flex flex-col clear-both bg-white">
 										<div class="profList flex flex-row p-2 overflow-auto w-0 min-w-full">
 											${list}   
                       <button class="flex flex-shrink-0 focus:outline-none block text-gray-500 w-8 mx-2" type="button">
@@ -48,8 +47,12 @@ function main(prjData,profData,chatData){
 											<button class="float-left p-2 w-2/12" id="btnAddChat">등록</button>
 										</div>
 											
-										<button type="submit" name="submit" class="float-right bg-blue-400 text-white hover:bg-blue-dark font-bold py-2 px-4 m-3 rounded cursor-pointer">채팅저장</button>
-									</form>	
+										<button onclick="saveChatList()" class="float-right bg-blue-400 text-white hover:bg-blue-dark font-bold py-2 px-4 m-3 rounded cursor-pointer">채팅저장</button>
+									</div>	
+                  <form name="chatSaveForm" method="POST" action="/editchat/save" >
+                    <input class="hidden" name="prjId" value="${prjData.PRJ_ID}">
+                    <input class="hidden" name="chatSaveList" type="text" value="">
+                  </form>	
                 </div>
               </div>
         </div>

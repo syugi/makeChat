@@ -215,6 +215,16 @@ function setProfile(){
     
 }
 
+
+const saveChatList = () => {
+  const chatSaveForm = document.chatSaveForm;
+  const chatSaveList = chatSaveForm.chatSaveList;
+  chatSaveList.value = JSON.stringify(_chats);
+  //alert(chatSaveList.value);
+  
+  chatSaveForm.submit();
+}
+
 function init(){
   
 	const btn      = document.getElementById('btnAddChat');

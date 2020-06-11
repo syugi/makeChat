@@ -4,11 +4,12 @@ const template = require('../views/template/template.js');
 const editChat = require('../views/editChat.js');		
 const db       = require('../model/db_conn.js');
 const is       = require('is-0');
+const mysql = require('mysql');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/:id', function(req, res, next) {
   
-   const prjId = req.query.id;
+   const prjId = req.params.id;
   
    const sql = "SELECT PRJ_ID, PRJ_NM, PRJ_DESC FROM PROJECT_LIST WHERE PRJ_ID = ? ";      
    db.query(sql, [prjId], function(error, prjData){
@@ -60,25 +61,38 @@ router.post('/save', function(req, res, next){
   //견적요청
 	const post = req.body;
 	console.log("post --> "+JSON.stringify(post));
-	
-  //res.redirect( `/editchat?id=${post.prjId}`);
+  //console.log("post --> "+JSON.stringify(post.chatSaveList));
   
-  // // ID 생성
-  // const selectReqId = "SELECT MAX(IFNULL(REQ_ID,0))+1 AS REQ_ID FROM REQ_QUOTE_LIST";
-  // db.query(selectReqId, [], function(error, result){
-  //   if(error){
-  //     console.error("ID 생성 오류");
-  //     throw error;
-  //   }
-    
-  //   // let reqId = result[0].REQ_ID;
-  //   //  if(is.empty(reqId)){
-  //   //    reqId = 0;
-  //   //  }
-  //   // console.log("생성된 ID : "+reqId);
-  //   // const reqDate  =  dateformat.asString('yyyyMMdd', new Date()); //요청일자
-  // });       
+  const chatSaveList = JSON.parse(post.chatSaveList);
+  //console.log("post111 --> "+chatSaveList[0].chatMsg);
   
+  
+  const chat_arr = [
+   // { prjId: '1', profId: '1', chatSeq: '0' , chatType: 'Msg', chatMsg: '안녕'},
+    //{ prjId: '1', profId: '1', chatSeq: '1' , chatType: 'Msg', chatMsg: '반가워'},
+   // { prjId: '1', profId: '1', chatSeq: '2' , chatType: 'Msg', chatMsg: '잘부탁해'}
+    { prjId: '1', profId: '1', chatSeq: '3' , chatType: 'Msg', chatMsg: '반가워'},
+    { prjId: '1', profId: '1', chatSeq: '4' , chatType: 'Msg', chatMsg: '반가워22'}
+  ]
+  
+  const sql = " INSERT INTO CHAT_LIST ( CHAT_ID, PRJ_ID, PROF_ID, CHAT_SEQ, CHAT_TYPE, CHAT_MSG) VALUES ( 0 , ? , ? , ?, ? , ?); ";
+
+  let sqls = "";
+  let params = [];
+  chat_arr.map( chat => {
+    params = [chat.prjId, chat.profId, chat.chatSeq, chat.chatType, chat.chatMsg];
+    sqls += mysql.format(sql, params);
+  });
+
+  db.query(sqls, function(error, result){
+  console.log(sqls);
+    if(error){
+      throw error;
+    }
+
+    res.redirect( `/editchat/${post.prjId}`);
+  });      
+
 });
 
 module.exports = router;
