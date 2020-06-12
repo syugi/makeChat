@@ -8,15 +8,15 @@ const is       = require('is-0');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   
-  const sql = "SELECT PRJ_ID, PRJ_NM, PRJ_DESC FROM PROJECT_LIST A ORDER BY PRJ_ID";
+  const sql = "SELECT PRJ_ID, PRJ_NM, PRJ_DESC FROM PROJECT_LIST A WHERE REC_STAT <> 'D' ORDER BY PRJ_ID";
         
    db.query(sql, [], function(error, result){
       if(error){
         throw error;
       }
      
-      console.log(result);
-
+      console.log(result);
+     
       const title  = "Make Chat";
       const link   = ``;
       const body  = `${index.html(result)}`;
@@ -30,7 +30,8 @@ router.get('/', function(req, res, next) {
 
 router.get('/delete', function(req, res, next) {
   
-   const sql = "DELETE FROM PROJECT_LIST WHERE PRJ_ID = ?";
+   //const sql = "DELETE FROM PROJECT_LIST WHERE PRJ_ID = ?";
+  const sql = "UPDATE PROJECT_LIST SET REC_STAT = 'D' WHERE PRJ_ID = ?";
         
    db.query(sql, [req.query.id], function(error, result){
       if(error){
@@ -54,13 +55,18 @@ router.post('/save', function(req, res, next){
   //Insert  
   if(is.empty(post.prjId)){
 
-    const insertProject = "INSERT INTO PROJECT_LIST ( PRJ_ID, PRJ_NM, PRJ_DESC) VALUES (0, ?, ?)";
+    const insertProject = "INSERT INTO PROJECT_LIST ( PRJ_ID, PRJ_NM, PRJ_DESC , REC_STAT) VALUES (0, ?, ? , 'I')";
     db.query(insertProject, [ post.prjNm, post.prjDesc], function(error, result){
       if(error){
-        console.error("Project Update Error!!");
         throw error;
       }
-        res.redirect( '/');
+      
+      const prjId = result.insertId;
+      
+      addDefaultProfile(prjId, '선생님','left', 'profile_1.png' ,1);
+      addDefaultProfile(prjId,  '학생' ,'right', 'profile_2.png' ,2);
+      
+      res.redirect( '/');
     });  
 
   //Udate
@@ -68,7 +74,6 @@ router.post('/save', function(req, res, next){
     const updateProject = "UPDATE PROJECT_LIST SET PRJ_NM = ? , PRJ_DESC = ? WHERE PRJ_ID = ?";
     db.query(updateProject, [ post.prjNm, post.prjDesc, post.prjId], function(error, result){
       if(error){
-        console.error("Project Insert Error!!");
         throw error;
       }
         res.redirect( '/');
@@ -85,12 +90,23 @@ router.post('/modify', function(req, res, next){
   const updateProject = "UPDATE PROJECT_LIST SET PRJ_NM = ? , PRJ_DESC = ? WHERE PRJ_ID = ?";
     db.query(updateProject, [ post.prjNm, post.prjDesc, post.prjId], function(error, result){
       if(error){
-        console.error("Project Insert Error!!");
         throw error;
       }
         res.redirect( `/editchat?id=${post.prjId}`);
     });  
 });
+
+
+function addDefaultProfile(prjId, profNm, position, filePath, sortSeq){
+   const insertProf = "INSERT INTO PROF_LIST ( PROF_ID, PRJ_ID, PROF_NM, POSITION, FILE_PATH ,SORT_SEQ) VALUES (0, ?, ?, ?, ?, ?)";
+
+      db.query(insertProf, [ prjId, profNm, position, filePath, sortSeq], function(error, result){
+        if(error){
+          throw error;
+        }
+        console.log(`[Insert E n d] 프로필 [${profNm}]이(가) 추가되었습니다`);
+      });
+}
 
 
 module.exports = router;

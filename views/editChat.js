@@ -11,15 +11,15 @@ function main(prjData,profData,chatData){
 	console.log(profData);
   console.log(chatData);
   
-  let list = "";
+  let list_prof = "";
   profData.forEach((data, i)=>{
     const active = i==0?'active':'';
-    list += `<div class="text-sm text-center mx-2">`;
-		list += `			<div class="profDiv w-12 h-12 relative flex flex-shrink-0">`;
-    list += `      <img class="profImg shadow-md rounded-full w-full h-full object-cover ${active}" src=${data.FILE_PATH} alt="" onclick="selectProf( this,'${data.PROF_ID}','${data.PROF_NM}','${data.POSITION}','${data.FILE_PATH}')">`;
-		list += `			</div>`;
-    list += `			<p class="pt-2">${data.PROF_NM}</p>`;
-    list += `</div>`;
+    list_prof += `<div class="text-sm text-center mx-2">`;
+		list_prof += `			<div class="profDiv w-12 h-12 relative flex flex-shrink-0">`;
+    list_prof += `      <img class="profImg shadow-md rounded-full w-full h-full object-cover ${active}" src="../uploads/${data.FILE_PATH}" alt="" onclick="selectProf( this,'${data.PROF_ID}')">`;
+		list_prof += `			</div>`;
+    list_prof += `			<p class="pt-2">${data.PROF_NM}</p>`;
+    list_prof += `</div>`;
   });  
   
   return `
@@ -34,24 +34,24 @@ function main(prjData,profData,chatData){
                   </ul>
 									<div class="chatInputForm flex flex-col clear-both bg-white">
 										<div class="profList flex flex-row p-2 overflow-auto w-0 min-w-full">
-											${list}   
+											${list_prof}   
                       <button class="flex flex-shrink-0 focus:outline-none block text-gray-500 w-8 mx-2" type="button">
                         <svg class="w-full h-full fill-current" viewBox="0 0 24 24">
                            <path d="M17 11a1 1 0 0 1 0 2h-4v4a1 1 0 0 1-2 0v-4H7a1 1 0 0 1 0-2h4V7a1 1 0 0 1 2 0v4h4z"></path>
                         </svg>
                       </button>
                     </div>  
-                    <div class="h-10"> 
-											<img src="http://placehold.it/16x16" alt="" class="float-left w-1/12"/>
-											<input type="text" id="chatInput" class="border border-blue float-left w-9/12 h-full">
-											<button class="float-left p-2 w-2/12" id="btnAddChat">등록</button>
-										</div>
-											
+                    <form class="addChatForm h-10"> 
+                        <img src="http://placehold.it/16x16" alt="" class="float-left w-1/12"/>
+                        <input type="text" id="chatInput" class="border border-blue float-left w-9/12 h-full">
+                        <button class="float-left p-2 w-2/12" id="btnAddChat">등록</button>
+									  	</form>
 										<button onclick="saveChatList()" class="float-right bg-blue-400 text-white hover:bg-blue-dark font-bold py-2 px-4 m-3 rounded cursor-pointer">채팅저장</button>
 									</div>	
                   <form name="chatSaveForm" method="POST" action="/editchat/save" >
                     <input class="hidden" name="prjId" value="${prjData.PRJ_ID}">
                     <input class="hidden" name="chatSaveList" type="text" value="">
+                    <input class="hidden" name="chatDeleteList" type="text" value="">
                   </form>	
                 </div>
               </div>

@@ -37,6 +37,9 @@ exports.HTML = function(title, link, body , script){
           </div>  -->
 			</footer>
 		</div>
+    <div class="hidden">
+    아이콘 제작자 <a href="https://www.flaticon.com/kr/authors/photo3idea-studio" title="photo3idea_studio">photo3idea_studio</a> from <a href="https://www.flaticon.com/kr/" title="Flaticon"> www.flaticon.com</a>
+    </div>
 	  </body>
 	  </html>
    

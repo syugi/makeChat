@@ -16,26 +16,24 @@ const openModal = (selectedPrjId) => {
   const prjId         = document.getElementById('modalPrjId');
   const prjNm         = document.getElementById('mopdalPrjNm');
   const desc          = document.getElementById('modalPrjDesc');
-  const desc          = document.getElementById('modalPrjDesc');
-
-  
-  //수정
-  if(selectedPrjId != null){
+ 
+  //수정
+  if(selectedPrjId != null){
     
    const li         = document.getElementById(selectedPrjId);
     
     prjId.value     = selectedPrjId;
     prjNm.value     = li.querySelector('div.prj_nm').innerText;
-    desc.value      = li.querySelector('div.prj_desc').innerText;
-    title.innerHTML = "프로젝트 수정";
+    desc.value      = li.querySelector('div.prj_desc').innerText;
+    title.innerHTML = "프로젝트 수정";
     
-  //생성
+  //생성
   }else{
 
     prjId.value     = "";
     prjNm.value     = "NEW PROJECT";
     desc.value      = "";
-    title.innerHTML = "프로젝트 생성";
+    title.innerHTML = "프로젝트 생성";
 
   }
   

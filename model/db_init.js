@@ -18,6 +18,7 @@ CREATE TABLE PROJECT_LIST(
               PRJ_ID          INT NOT NULL AUTO_INCREMENT
             , PRJ_NM     varchar(20)   not null   
            , PRJ_DESC         varchar(1000) 
+,REC_STAT varchar(1)
             , CREATED_DT DATETIME not null default now()
             , primary key(PRJ_ID)
          )
@@ -30,7 +31,7 @@ CREATE TABLE CHAT_LIST(
               CHAT_ID                     INT NOT NULL AUTO_INCREMENT
             , PRJ_ID            INT  NOT NULL
             , PROF_ID                INT NOT NULL
-           , CHAT_SEQ           varchar(10)
+           , CHAT_SEQ           INT
             , CHAT_TYPE    varchar(15)  
             , CHAT_MSG     varchar(2000) 
             , CREATED_DT    DATETIME not null default now()
@@ -48,6 +49,7 @@ CREATE TABLE PROF_LIST(
             , PROF_NM   varchar(100)
             , POSITION     varchar(10) 
             , FILE_PATH          varchar(500)
+, SORT_SEQ INT
             , CREATED_DT   DATETIME not null default now()
             , primary key(PROF_ID)
          )
@@ -61,33 +63,29 @@ db.connect(function(err) {
 	
   //dropTable("PROJECT_LIST");
   //dropTable("ATCH_FILE_LIST");
-  //dropTable("PROF_LIST");
+ // dropTable("PROF_LIST");
   
-  //견적요청 테이블  생성
-  //createTable("PROJECT_LIST", create_projectList);
-  
-  //첨부파일 테이블  생성
-  //createTable("CHAT_LIST", create_chatList);
-  
-  //문자발송 테이블  생성
-  //createTable("PROF_LIST", create_profList);
+  //createTable("PROJECT_LIST", create_projectList);
 
-  addDefaultProfile('1', '선생님','left', 'https://randomuser.me/api/portraits/women/12.jpg');
-  addDefaultProfile('1', '학생' ,'right', 'https://randomuser.me/api/portraits/women/12.jpg');
+  //createTable("CHAT_LIST", create_chatList);
+
+  createTable("PROF_LIST", create_profList);
+
+  //addDefaultProfile('1', '선생님','left', 'https://randomuser.me/api/portraits/women/12.jpg' , '1');
+  //addDefaultProfile('1', '학생' ,'right', 'https://randomuser.me/api/portraits/women/12.jpg' , '2');
 });
 
 
-function addDefaultProfile(prjId, profNm, position, filePath){
-   const insertProf = "INSERT INTO PROF_LIST ( PROF_ID, PRJ_ID, PROF_NM, POSITION, FILE_PATH ) VALUES (0, ?, ?, ?, ?)";
+function addDefaultProfile(prjId, profNm, position, filePath, sortSeq){
+   const insertProf = "INSERT INTO PROF_LIST ( PROF_ID, PRJ_ID, PROF_NM, POSITION, FILE_PATH ,SORT_SEQ) VALUES (0, ?, ?, ?, ?, ?)";
 
-      db.query(insertProf, [ prjId, profNm, position, filePath], function(error, result){
+      db.query(insertProf, [ prjId, profNm, position, filePath, sortSeq], function(error, result){
         if(error){
           throw error;
         }
         console.log(`[Insert E n d] 프로필 [${profNm}]이(가) 추가되었습니다`);
       });
 }
-
 /*
  * 테이블 생성
  */

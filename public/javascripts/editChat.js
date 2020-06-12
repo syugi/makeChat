@@ -2,8 +2,11 @@ const profImgs   = document.querySelectorAll('.profImg');
 const modal      = document.querySelector('.projectModal');  
 const chatList   = document.querySelector('.chatList');  
 
-let _activeProf = {};
+let _prjInfo    = {};
+let _profList   = [];
 let _chats      = [];
+
+let _activeProfId = "";
 
 const openModal = () => {
   modal.classList.remove("hidden");
@@ -13,21 +16,26 @@ const closeModal = () => {
   modal.classList.add("hidden");
 }
 
-const settingProf = (profId, profNm, position, filePath) => {
-  _activeProf = {
-    profId,profNm,position,filePath
-  }
+const settingData = (prjInfo,profData,chatData) => {
+  
+  _prjInfo = prjInfo;
+  _profList = profData;
+  _chats = chatData;
+  // alert("_prjInfo :: "+ JSON.stringify(_prjInfo));
+  // alert("_profList :: "+ JSON.stringify(_profList));
+  // alert("_chats :: "+ JSON.stringify(_chats));
+  
+  _activeProfId = profData[0].PROF_ID;
+  
+  chatData.forEach((data) => {
+    addChat(data.CHAT_SEQ, data.CHAT_MSG, data.CHAT_TYPE, data.POSITION, data.PROF_ID , 'N');
+  });
+  
 }
 
-const settingChat = (chatData) =>{
-  //alert(chatData);
-}
-
-const selectProf = (div, profId, profNm, position, filePath) =>{
+const selectProf = (div, profId) =>{
   const profDiv = div.closest('.profDiv');
-
-  //alert(JSON.stringify(_activeProf));
-
+  
   //다른선택 해제 
   profImgs.forEach((data) => {
     data.classList.remove("active");
@@ -35,24 +43,57 @@ const selectProf = (div, profId, profNm, position, filePath) =>{
   
   div.classList.add("active");   
   
-  _activeProf   = {profId,profNm,position,filePath};
+  _activeProfId   = profId;
 }
+
+
+function handleChatListClick(event){ 
+  // const li = document.createElement("li");
+  // const locaLine = document.createElement("span");
+  // locaLine.innerText = "여기";
+  // locaLine.classList.add("left","block");
+  // li.appendChild(locaLine);
+  // chatList.appendChild(li);
+}
+
 
 const handleBtnAddChat = (e) => {
 	e.preventDefault();
-	const input      = document.getElementById('chatInput'); 
-
+	const input    = document.getElementById('chatInput'); 
   const chatMsg  = input.value;
-  let chatType = "Msg"; 
-  let position = _activeProf.position;
-  let profId   = _activeProf.profId;
-  
+  const profId   = _activeProfId;
+  const position = getProfInfo(profId).POSITION;
+  const chatSeq  = () => {
+    if(_chats.length === 0){
+      return 1;
+    }else{
+      return _chats[_chats.length-1].CHAT_SEQ + 1;
+    }
+  }
+  const recStat  = "I"; 
+  let chatType   = "Msg"; 
+  
+  if(chatMsg == "" || chatMsg == null){
+    return;
+  }
+  
   //유튜브 형식인 경우
   if(chatMsg.indexOf("youtu.be") > -1){
      chatType = "Youtu";
   }
+   
+  const chatObj = {
+     PRJ_ID    : _prjInfo.PRJ_ID
+    ,PROF_ID   : profId
+    ,CHAT_SEQ  : chatSeq
+    ,CHAT_TYPE : chatType
+    ,CHAT_MSG  : chatMsg
+    ,POSITION  : position
+    ,REC_STAT  : recStat
+  }
+  _chats.push(chatObj);
   
-	addChat(chatMsg, chatType , position, profId);   // 메세지, 위치, 타입(msg:메세지, img:이미지, btn:버튼), 프로필 ID
+	addChat(chatSeq, chatMsg, chatType , position, profId);   // 메세지, 위치, 타입(msg:메세지, img:이미지, btn:버튼), 프로필 ID
   
 	input.value = "";
 }
@@ -65,33 +106,22 @@ const handleBtnAddChat = (e) => {
  * @param position   : 위치(left,right)
  * @param profId     : 프로필 ID
  */
-function addChat(msg, type, position, profId){
+const addChat = (chatSeq, msg, type, position, profId) => {
   
   if(msg == "" || msg == null){
     return;
   }
   
-  const chatObj = {
-     profId 
-    ,chatSeq : _chats.length
-    ,position
-    ,chatType : type
-    ,chatMsg : msg,
-  }
-  _chats.push(chatObj);
-  //alert(JSON.stringify(_chats));
-  
   //profId가 전에 보낸 채팅 id랑 같지 않으면 프로필 전송하기 
   const liList = document.querySelectorAll(".chatList li");
   if(liList.length == 0){
-    setProfile();
+    setProfile(profId);
   }else{
     const prevProfId = liList[liList.length-1].value;
     if(prevProfId == null || profId != prevProfId){ 
-      setProfile();
+      setProfile(profId);
     }
   }
-  
   
   const li = document.createElement("li");
 
@@ -119,7 +149,7 @@ function addChat(msg, type, position, profId){
   //유튜브 링크 
   }else if(type == "Youtu"){
 
-    sendMsg(msg,position,"Msg",profId);
+    addChat(chatSeq, msg,"Msg",position,profId);
     
     //유튜브 형식이 아닌경우 메세지 처리 
     if(msg.indexOf("youtu.be") < 0){
@@ -129,7 +159,6 @@ function addChat(msg, type, position, profId){
     //유튜브 ID 분리 
     const msgSplit = msg.split("/");
     const youtuId  = msgSplit[3];  //유튜브 링크 예시) https://youtu.be/CI0oF5RovCs 
-    console.log("유튜브 ID:"+youtuId);
     
     elmt = document.createElement("img");
     elmt.src = "https://img.youtube.com/vi/"+youtuId+"/0.jpg";
@@ -167,10 +196,33 @@ function addChat(msg, type, position, profId){
   elmt.classList.add("chatMsg")+1; //채팅 여백 
   
   console.log(profId);
-  //li.id    = chats.length;  //리스트 ID
+  li.id    = chatSeq;        //리스트 ID
   li.value = profId;        //프로필 ID
   li.appendChild(elmt);
+  
+  const delBtn = document.createElement("div");
+  delBtn.innerText  = "x";
+  delBtn.onclick = () => { 
     
+    chatList.removeChild(li);
+     
+    const chatInfo = getChatInfo(chatSeq);
+    if(chatInfo.REC_STAT === 'I'){
+      const cleanChats = _chats.filter(function(chat){
+        return chat.CHAT_SEQ !== parseInt(li.id);
+      });
+      _chats = cleanChats;
+    }else if(chatInfo.REC_STAT === 'N'){
+      chatInfo.REC_STAT = 'D';
+    }
+  };
+
+  delBtn.style.cursor = "pointer";
+  delBtn.classList.add(position);
+  delBtn.classList.add("text-gray-500","bg-white","rounded-full","hover:bg-gray-300","px-1");
+  
+  li.appendChild(delBtn);
+  
   chatList.appendChild(li);
 
   //스크롤 맨 밑으로 
@@ -178,20 +230,23 @@ function addChat(msg, type, position, profId){
 
 }
 
+
+
 /**
  * 프로필 표시  
  */
-function setProfile(){
-
-    const imgPath     = _activeProf.filePath;
-    const profName    = _activeProf.profNm;
-    const position    = _activeProf.position;
+const setProfile = (profId) =>  {
+    
+    const profInfo    = getProfInfo(profId);
+    const imgPath     = profInfo.FILE_PATH;
+    const profName    = profInfo.PROF_NM;
+    const position    = profInfo.POSITION;
     
     //프로필 추가 
     const li = document.createElement("li");
     
     const img = document.createElement("img");
-    img.src = imgPath;
+    img.src = "../uploads/"+imgPath;
     img.classList.add("profileImg");
 
     const span = document.createElement("span");
@@ -216,19 +271,57 @@ function setProfile(){
 }
 
 
+/**
+ * 채팅 저장  
+ */
 const saveChatList = () => {
-  const chatSaveForm = document.chatSaveForm;
-  const chatSaveList = chatSaveForm.chatSaveList;
-  chatSaveList.value = JSON.stringify(_chats);
-  //alert(chatSaveList.value);
-  
+  const chatSaveForm   = document.chatSaveForm;
+  const chatSaveList   = chatSaveForm.chatSaveList;
+  const chatDeleteList = chatSaveForm.chatDeleteList
+  
+  const saveChat = _chats.filter(function(chat){
+    return chat.REC_STAT === 'I';
+  });
+  const deleteChat = _chats.filter(function(chat){
+    return chat.REC_STAT === 'D';
+  });
+  
+  chatSaveList.value   = JSON.stringify(saveChat);  
+  chatDeleteList.value = JSON.stringify(deleteChat);  
   chatSaveForm.submit();
 }
 
+/**
+ * 프로필 정보  
+ */
+const getProfInfo = (profId) => {
+  
+  let profInfo = _profList.filter(function(prof){
+    return prof.PROF_ID === parseInt(profId);
+  });
+  
+  return profInfo[0]; 
+}
+
+/**
+ * 채팅 정보  
+ */
+const getChatInfo = (chatSeq) => {
+  
+  let chatInfo = _chats.filter(function(chat){
+    return chat.CHAT_SEQ === parseInt(chatSeq);
+  });
+  
+  return chatInfo[0]; 
+}
+
+
 function init(){
   
-	const btn      = document.getElementById('btnAddChat');
-	btn.addEventListener("click", handleBtnAddChat);
+  const addChatForm   = document.querySelector('.addChatForm');  
+  addChatForm.addEventListener("submit", handleBtnAddChat);
+  
+  chatList.addEventListener("click",handleChatListClick);
 }
 
 
