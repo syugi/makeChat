@@ -158,8 +158,8 @@ const addChat = (chatSeq, msg, type, position, profId) => {
     
     //유튜브 ID 분리 
     const msgSplit = msg.split("/");
-    const youtuId  = msgSplit[3];  //유튜브 링크 예시) https://youtu.be/CI0oF5RovCs 
-    
+    const youtuId  = msgSplit[msgSplit.length-1];  //유튜브 링크 예시) https://youtu.be/CI0oF5RovCs 
+    alert(youtuId);
     elmt = document.createElement("img");
     elmt.src = "https://img.youtube.com/vi/"+youtuId+"/0.jpg";
     elmt.onclick = () => { window.open(msg);};

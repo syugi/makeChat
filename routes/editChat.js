@@ -4,7 +4,28 @@ const template = require('../views/template/template.js');
 const editChat = require('../views/editChat.js');		
 const db       = require('../model/db_conn.js');
 const is       = require('is-0');
-const mysql = require('mysql');
+const mysql    = require('mysql');
+const multer   = require('multer');	
+
+/* File Upload */
+const storage = multer.diskStorage({ 
+  destination(req, file, callback) { 
+    callback(null, 'public/uploads'); 
+  }, 
+  filename(req, file, callback) { 
+    let array = file.originalname.split('.'); 
+    const result =  Date.now().toString() +'.' + array[1];
+    console.log(">>>result :  "+result); 
+    callback(null, result); 
+  } 
+}); 
+
+const upload = multer({ 
+  storage, 
+  limits: { 
+    files: 10, fileSize: 1024 * 1024 * 1024, 
+  } 
+});
 
 /* GET home page. */
 router.get('/:id', function(req, res, next) {
@@ -53,7 +74,7 @@ router.get('/:id', function(req, res, next) {
 
 });
 
-router.post('/save', function(req, res, next){
+router.post('/save', upload.single('img_file'), function(req, res, next){
 	
 	const post = req.body;
 	console.log("post --> "+JSON.stringify(post));

@@ -42,7 +42,8 @@ function main(prjData,profData,chatData){
                       </button>
                     </div>  
                     <form class="addChatForm h-10"> 
-                        <img src="http://placehold.it/16x16" alt="" class="float-left w-1/12"/>
+                        <input class="hidden block py-2" id="file" type="file" name="img_file" accept="image/*">
+                        <img src="../images/icon_photo.png" alt="" class="float-left w-1/12 px-1 cursor-pointer" onclick="document.getElementById('file').click();""/>
                         <input type="text" id="chatInput" class="border border-blue float-left w-9/12 h-full">
                         <button class="float-left p-2 w-2/12" id="btnAddChat">등록</button>
 									  	</form>
