@@ -77,7 +77,8 @@ router.get('/:id', function(req, res, next) {
 router.post('/save', upload.single('img_file'), function(req, res, next){
 	
 	const post = req.body;
-	console.log("post --> "+JSON.stringify(post));
+  console.dir(post, { colors: true, depth: 1 });
+  //console.log("post --> "+JSON.stringify(post));
   
   const prjId = post.prjId;
   const chatSaveList   = JSON.parse(post.chatSaveList);
@@ -86,29 +87,35 @@ router.post('/save', upload.single('img_file'), function(req, res, next){
   let sqls = "";
   let params = [];
   
-  const insertSql = " INSERT INTO CHAT_LIST ( CHAT_ID, PRJ_ID, PROF_ID, CHAT_SEQ, CHAT_TYPE, CHAT_MSG) VALUES ( 0 , ? , ? , ?, ? , ?); ";
+  
+  const insertSql = " INSERT INTO CHAT_LIST ( CHAT_ID, PRJ_ID, PROF_ID, CHAT_SEQ, CHAT_TYPE, CHAT_MSG) VALUES ( 0 , ? , ? , ?, ? , ?); ";
 
   chatSaveList.map( chat => {
     params = [prjId, chat.PROF_ID, chat.CHAT_SEQ, chat.CHAT_TYPE, chat.CHAT_MSG];
     sqls += mysql.format(insertSql, params);
   });
-  
-  const deleteSql = " DELETE FROM CHAT_LIST WHERE PRJ_ID = ? AND CHAT_SEQ = ? ; ";
+
+
+  const deleteSql = " DELETE FROM CHAT_LIST WHERE PRJ_ID = ? AND CHAT_SEQ = ? ; ";
 
   chatDeleteList.map( chat => {
     params = [prjId, chat.CHAT_SEQ];
     sqls += mysql.format(deleteSql, params);
   });
+  
+  
+  if(!is.empty(sqls)){
+    db.query(sqls, function(error, result){
+    console.log(sqls);
+      if(error){
+        throw error;
+      }
 
-  db.query(sqls, function(error, result){
-  console.log(sqls);
-    if(error){
-      throw error;
-    }
-
+      res.redirect( `/editchat/${prjId}`);
+    });      
+  }else{
     res.redirect( `/editchat/${prjId}`);
-  });      
-
+  }
 });
 
 module.exports = router;

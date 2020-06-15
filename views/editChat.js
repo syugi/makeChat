@@ -41,14 +41,19 @@ function main(prjData,profData,chatData){
                         </svg>
                       </button>
                     </div>  
-                    <form class="addChatForm h-10"> 
-                        <input class="hidden block py-2" id="file" type="file" name="img_file" accept="image/*">
+                    <form class="addChatForm h-10">      
                         <img src="../images/icon_photo.png" alt="" class="float-left w-1/12 px-1 cursor-pointer" onclick="document.getElementById('file').click();""/>
                         <input type="text" id="chatInput" class="border border-blue float-left w-9/12 h-full">
-                        <button class="float-left p-2 w-2/12" id="btnAddChat">등록</button>
+                        <button class="float-left p-2 w-2/12" id="btnAddChat">등록</button>
 									  	</form>
 										<button onclick="saveChatList()" class="float-right bg-blue-400 text-white hover:bg-blue-dark font-bold py-2 px-4 m-3 rounded cursor-pointer">채팅저장</button>
 									</div>	
+                  <form name="chatSaveFile" method="post" action="/editChat/saveFile" enctype="multipart/form-data">
+                        <input class=" block py-2" id="file" type="file" name="img_file" accept="image/*">
+                        <input class="hidden" name="prjId" value="${prjData.PRJ_ID}">
+                        <input class="hidden" name="profId" value="">    
+                        <button onclick="saveImgFile()">파일등록</button>
+                  </form>
                   <form name="chatSaveForm" method="POST" action="/editchat/save" >
                     <input class="hidden" name="prjId" value="${prjData.PRJ_ID}">
                     <input class="hidden" name="chatSaveList" type="text" value="">

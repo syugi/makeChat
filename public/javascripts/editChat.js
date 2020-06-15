@@ -63,13 +63,7 @@ const handleBtnAddChat = (e) => {
   const chatMsg  = input.value;
   const profId   = _activeProfId;
   const position = getProfInfo(profId).POSITION;
-  const chatSeq  = () => {
-    if(_chats.length === 0){
-      return 1;
-    }else{
-      return _chats[_chats.length-1].CHAT_SEQ + 1;
-    }
-  }
+  const chatSeq  = getChatSeq();
   const recStat  = "I"; 
   let chatType   = "Msg"; 
   
@@ -111,8 +105,8 @@ const addChat = (chatSeq, msg, type, position, profId) => {
   if(msg == "" || msg == null){
     return;
   }
-  
-  //profId가 전에 보낸 채팅 id랑 같지 않으면 프로필 전송하기 
+ 
+//profId가 전에 보낸 채팅 id랑 같지 않으면 프로필 전송하기 
   const liList = document.querySelectorAll(".chatList li");
   if(liList.length == 0){
     setProfile(profId);
@@ -195,7 +189,6 @@ const addChat = (chatSeq, msg, type, position, profId) => {
   
   elmt.classList.add("chatMsg")+1; //채팅 여백 
   
-  console.log(profId);
   li.id    = chatSeq;        //리스트 ID
   li.value = profId;        //프로필 ID
   li.appendChild(elmt);
@@ -203,10 +196,11 @@ const addChat = (chatSeq, msg, type, position, profId) => {
   const delBtn = document.createElement("div");
   delBtn.innerText  = "x";
   delBtn.onclick = () => { 
-    
+
     chatList.removeChild(li);
      
     const chatInfo = getChatInfo(chatSeq);
+   
     if(chatInfo.REC_STAT === 'I'){
       const cleanChats = _chats.filter(function(chat){
         return chat.CHAT_SEQ !== parseInt(li.id);
@@ -226,7 +220,7 @@ const addChat = (chatSeq, msg, type, position, profId) => {
   chatList.appendChild(li);
 
   //스크롤 맨 밑으로 
-  //chatList.scrollTop = chatList.scrollHeight;
+  chatList.scrollTop = chatList.scrollHeight;
 
 }
 
@@ -275,6 +269,7 @@ const setProfile = (profId) =>  {
  * 채팅 저장  
  */
 const saveChatList = () => {
+ 
   const chatSaveForm   = document.chatSaveForm;
   const chatSaveList   = chatSaveForm.chatSaveList;
   const chatDeleteList = chatSaveForm.chatDeleteList
@@ -285,12 +280,20 @@ const saveChatList = () => {
   const deleteChat = _chats.filter(function(chat){
     return chat.REC_STAT === 'D';
   });
-  
+  
   chatSaveList.value   = JSON.stringify(saveChat);  
   chatDeleteList.value = JSON.stringify(deleteChat);  
   chatSaveForm.submit();
 }
 
+/*
+ * 이미지 파일 저장
+*/
+const saveImgFile = () => {
+  const chatSaveFile   = document.chatSaveFile;
+  profId
+  chatSaveFile.submit();
+}
 /**
  * 프로필 정보  
  */
@@ -315,6 +318,20 @@ const getChatInfo = (chatSeq) => {
   return chatInfo[0]; 
 }
 
+
+const getChatSeq  = () => {
+ 
+  if(_chats.length === 0){
+    return 1;
+    
+  }else{
+    const lastSeq = _chats[_chats.length-1].CHAT_SEQ;
+    if(lastSeq == null){
+      return 1;
+    }
+    return lastSeq+1;
+  }
+}
 
 function init(){
   
