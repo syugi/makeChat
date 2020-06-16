@@ -56,7 +56,8 @@ router.get('/:id', function(req, res, next) {
             }
 
             //console.log(chatData);
-                  
+             console.log("prjData여기여기111 : ", prjData);
+          
             const title  = "Make Chat";
             const link   = ``;
             const body  = `${editChat.html(prjData[0],profData,chatData)}`;
@@ -74,12 +75,22 @@ router.get('/:id', function(req, res, next) {
 
 });
 
-router.post('/save', upload.single('img_file'), function(req, res, next){
+router.post('/save', upload.array('img_file'), function(req, res, next){
 	
 	const post = req.body;
   console.dir(post, { colors: true, depth: 1 });
   //console.log("post --> "+JSON.stringify(post));
   
+   //첨부파일 저장
+  const files = req.files; 
+  console.log("files",files);
+  
+  if(!is.empty(files)){
+    files.forEach((file, index)=>{
+            console.log(`file inform : ${file.originalname},  ${file.filename},  ${file.mimetype},  ${file.size}`); 
+    });
+  }
+    
   const prjId = post.prjId;
   const chatSaveList   = JSON.parse(post.chatSaveList);
   const chatDeleteList = JSON.parse(post.chatDeleteList);
@@ -117,5 +128,37 @@ router.post('/save', upload.single('img_file'), function(req, res, next){
     res.redirect( `/editchat/${prjId}`);
   }
 });
+
+
+// router.post('/saveFile', upload.single('img_file'), function(req, res, next){
+	
+// 	const post = req.body;
+//   console.dir(post, { colors: true, depth: 2 });
+
+//   //첨부파일 저장
+//   const file = req.file; 
+//   console.dir(file);
+
+//   if(!is.empty(file)){
+      
+//     const prjId = post.prjId;
+//     const profId = post.profId;
+//     const chatSeq = post.chatSeq;
+//     const chatType = 'Img';
+//     const chatMsg = "";
+    
+//     const insertSql = " INSERT INTO CHAT_LIST ( CHAT_ID, PRJ_ID, PROF_ID, CHAT_SEQ, CHAT_TYPE, CHAT_MSG) VALUES ( 0 , ? , ? , ?, ? , ?); ";
+
+//     db.query(insertSql ,[prjId, profId, chatSeq, chatType, chatMsg], function(error, result){
+//         if(error){
+//           console.error("첨부파일 저장 오류");
+//           throw error;
+//         }        
+      
+//         res.redirect( `/editchat/${prjId}`);
+//     });
+//   }
+  
+// });
 
 module.exports = router;

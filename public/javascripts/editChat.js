@@ -93,6 +93,34 @@ const handleBtnAddChat = (e) => {
 }
 
 /**
+ * 이미지파일 
+ */
+const handleFileAddChat = () => {
+   //alert(e.target);
+
+	const chatMsg  = "Img";
+	const profId   = _activeProfId;
+	const position = getProfInfo(profId).POSITION;
+	const chatSeq  = getChatSeq();
+	const recStat  = "I"; 
+	let chatType   = "Img"; 
+
+	const chatObj = {
+	PRJ_ID    : _prjInfo.PRJ_ID
+	,PROF_ID   : profId
+	,CHAT_SEQ  : chatSeq
+	,CHAT_TYPE : chatType
+	,CHAT_MSG  : chatMsg
+	,POSITION  : position
+	,REC_STAT  : recStat
+	}
+	_chats.push(chatObj);
+  
+	addChat(chatSeq, chatMsg, chatType , position, profId);   // 메세지, 위치, 타입(msg:메세지, img:이미지, btn:버튼), 프로필 ID
+  
+}
+
+/**
  * 채팅 표시  
  *
  * @param msg        : 메세지 내용
@@ -117,6 +145,8 @@ const addChat = (chatSeq, msg, type, position, profId) => {
     }
   }
   
+  const chatInfo = getChatInfo(chatSeq);
+  
   const li = document.createElement("li");
 
   var elmt;
@@ -132,11 +162,39 @@ const addChat = (chatSeq, msg, type, position, profId) => {
   //이미지
   }else if(type == "Img"){
     
-    elmt = document.createElement("img");
-    elmt.src = msg;
-    // elmt.width = "300";
-    // elmt.height = "200";
+    if(chatInfo.REC_STAT === 'I'){
+      
+        const reader = new FileReader();
 
+        elmt = document.createElement("img");
+        const fileInput  = document.querySelector('#fileInput');
+        const file       = fileInput.files[0];
+
+        reader.addEventListener("load", function () {
+          elmt.src = reader.result;
+        }, false);
+
+        if (file) {
+          reader.readAsDataURL(file);
+           
+          fileInput.id = `${type}_${chatSeq}`;
+          alert(fileInput.id);  
+          const fileSaveList  = document.querySelector('#fileSaveList');
+          var newFileInput  = document.createElement("input");  
+          newFileInput.id     = "fileInput";
+          newFileInput.type   = "file";
+          newFileInput.name   = "img_file";
+          newFileInput.accept = "image/*";
+          newFileInput.addEventListener("change", handleFileAddChat,false);
+            
+          fileSaveList.appendChild(newFileInput);
+        }
+        
+    }else {
+        elmt = document.createElement("img");
+        elmt.src = msg;
+    }
+    
     elmt.classList.add(type);
     elmt.classList.add(position);
     
@@ -198,8 +256,6 @@ const addChat = (chatSeq, msg, type, position, profId) => {
   delBtn.onclick = () => { 
 
     chatList.removeChild(li);
-     
-    const chatInfo = getChatInfo(chatSeq);
    
     if(chatInfo.REC_STAT === 'I'){
       const cleanChats = _chats.filter(function(chat){
@@ -291,9 +347,10 @@ const saveChatList = () => {
 */
 const saveImgFile = () => {
   const chatSaveFile   = document.chatSaveFile;
-  profId
+  
   chatSaveFile.submit();
 }
+
 /**
  * 프로필 정보  
  */
@@ -318,7 +375,9 @@ const getChatInfo = (chatSeq) => {
   return chatInfo[0]; 
 }
 
-
+/**
+ * 채팅 순번
+ */
 const getChatSeq  = () => {
  
   if(_chats.length === 0){
@@ -337,7 +396,7 @@ function init(){
   
   const addChatForm   = document.querySelector('.addChatForm');  
   addChatForm.addEventListener("submit", handleBtnAddChat);
-  
+    
   chatList.addEventListener("click",handleChatListClick);
 }
 

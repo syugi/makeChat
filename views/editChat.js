@@ -7,9 +7,9 @@ module.exports = {
 }
 
 function main(prjData,profData,chatData){
-  
-	console.log(profData);
-  console.log(chatData);
+  console.log("prjData여기여기 : ", prjData);
+	// console.log(profData);
+	// console.log(chatData);
   
   let list_prof = "";
   profData.forEach((data, i)=>{
@@ -42,22 +42,19 @@ function main(prjData,profData,chatData){
                       </button>
                     </div>  
                     <form class="addChatForm h-10">      
-                        <img src="../images/icon_photo.png" alt="" class="float-left w-1/12 px-1 cursor-pointer" onclick="document.getElementById('file').click();""/>
+                        <img src="../images/icon_photo.png" alt="" class="float-left w-1/12 px-1 cursor-pointer" onclick="document.getElementById('fileInput').click();""/>
                         <input type="text" id="chatInput" class="border border-blue float-left w-9/12 h-full">
                         <button class="float-left p-2 w-2/12" id="btnAddChat">등록</button>
 									  	</form>
 										<button onclick="saveChatList()" class="float-right bg-blue-400 text-white hover:bg-blue-dark font-bold py-2 px-4 m-3 rounded cursor-pointer">채팅저장</button>
 									</div>	
-                  <form name="chatSaveFile" method="post" action="/editChat/saveFile" enctype="multipart/form-data">
-                        <input class=" block py-2" id="file" type="file" name="img_file" accept="image/*">
-                        <input class="hidden" name="prjId" value="${prjData.PRJ_ID}">
-                        <input class="hidden" name="profId" value="">    
-                        <button onclick="saveImgFile()">파일등록</button>
-                  </form>
-                  <form name="chatSaveForm" method="POST" action="/editchat/save" >
+                  <form name="chatSaveForm" method="POST" action="/editchat/save" enctype="multipart/form-data">
                     <input class="hidden" name="prjId" value="${prjData.PRJ_ID}">
                     <input class="hidden" name="chatSaveList" type="text" value="">
                     <input class="hidden" name="chatDeleteList" type="text" value="">
+                    <div id="fileSaveList" name="fileSaveList">
+                      <input class="" id="fileInput" type="file" name="img_file" accept="image/*" onchange="handleFileAddChat(event);">   
+                    </div>
                   </form>	
                 </div>
               </div>
