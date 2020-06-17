@@ -50,7 +50,7 @@ const closeModal = () => {
 
 const removeCheck = (prjId) => {
 	if (confirm("정말 삭제하시겠습니까??") == true){ 
-		 location.href=`/delete?id=${prjId}`;
+		 location.href=`/delete?id=${	prjId}`;
 	}else{   
 	   return false;
 	}
