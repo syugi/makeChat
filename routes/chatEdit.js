@@ -1,7 +1,7 @@
 const express  = require('express');
 const router   = express.Router();
 const template = require('../views/template/template.js');		
-const editChat = require('../views/editChat.js');		
+const chatEdit = require('../views/chatEdit.js');		
 const db       = require('../model/db_conn.js');
 const is       = require('is-0');
 const mysql    = require('mysql');
@@ -65,8 +65,8 @@ router.get('/:id', function(req, res, next) {
           
             const title  = "Make Chat";
             const link   = ``;
-            const body  = `${editChat.html(prjData[0],profData,chatData)}`;
-            const script = `<script src="/javascripts/editChat.js"></script>
+            const body  = `${chatEdit.html(prjData[0],profData,chatData)}`;
+            const script = `<script src="/javascripts/chatEdit.js"></script>
                             <script>
                               settingData(${JSON.stringify(prjData[0])},${JSON.stringify(profData)},${JSON.stringify(chatData)});
 
@@ -132,43 +132,11 @@ router.post('/save', upload.array('img_file'), function(req, res, next){
         throw error;
       }
 
-      res.redirect( `/editchat/${prjId}`);
+      res.redirect( `/chatEdit/${prjId}`);
     });      
   }else{
-    res.redirect( `/editchat/${prjId}`);
+    res.redirect( `/chatEdit/${prjId}`);
   }
 });
-
-
-// router.post('/saveFile', upload.single('img_file'), function(req, res, next){
-	
-// 	const post = req.body;
-//   console.dir(post, { colors: true, depth: 2 });
-
-//   //첨부파일 저장
-//   const file = req.file; 
-//   console.dir(file);
-
-//   if(!is.empty(file)){
-      
-//     const prjId = post.prjId;
-//     const profId = post.profId;
-//     const chatSeq = post.chatSeq;
-//     const chatType = 'Img';
-//     const chatMsg = "";
-    
-//     const insertSql = " INSERT INTO CHAT_LIST ( CHAT_ID, PRJ_ID, PROF_ID, CHAT_SEQ, CHAT_TYPE, CHAT_MSG) VALUES ( 0 , ? , ? , ?, ? , ?); ";
-
-//     db.query(insertSql ,[prjId, profId, chatSeq, chatType, chatMsg], function(error, result){
-//         if(error){
-//           console.error("첨부파일 저장 오류");
-//           throw error;
-//         }        
-      
-//         res.redirect( `/editchat/${prjId}`);
-//     });
-//   }
-  
-// });
 
 module.exports = router;

@@ -4,8 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var editChatRouter  = require('./routes/editChat');
+var indexRouter     = require('./routes/index');
+var chatEditRouter  = require('./routes/chatEdit');
+var chatRunRouter   = require('./routes/chatRun');
 
 var app = express();
 
@@ -19,8 +20,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/editchat', editChatRouter);
+app.use('/'        , indexRouter    );
+app.use('/chatEdit', chatEditRouter );
+app.use('/chatRun' , chatRunRouter  );
 // // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
 //   next(createError(404));

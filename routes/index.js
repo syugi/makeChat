@@ -92,12 +92,12 @@ router.post('/modify', function(req, res, next){
       if(error){
         throw error;
       }
-        res.redirect( `/editchat?id=${post.prjId}`);
+        res.redirect( `/chatEdit/${post.prjId}`);
     });  
 });
 
 
-function addDefaultProfile(prjId, profNm, position, filePath, sortSeq){
+const addDefaultProfile = (prjId, profNm, position, filePath, sortSeq) => {
    const insertProf = "INSERT INTO PROF_LIST ( PROF_ID, PRJ_ID, PROF_NM, POSITION, FILE_PATH ,SORT_SEQ) VALUES (0, ?, ?, ?, ?, ?)";
 
       db.query(insertProf, [ prjId, profNm, position, filePath, sortSeq], function(error, result){

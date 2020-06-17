@@ -24,7 +24,7 @@ function main(prjData,profData,chatData){
   
   return `
         <div class="wrap bg-gray-300">
-<button type="button" class="bg-gray-800 text-white hover:bg-blue-dark font-bold py-2 px-4 rounded cursor-pointer" onclick="location.href='/'">돌아가기</button>
+              <button type="button" class="bg-gray-800 text-white hover:bg-blue-dark font-bold py-2 px-4 rounded cursor-pointer" onclick="location.href='/'">돌아가기</button>
               <div class="px-4 py-6">
                 <p class="text-lg float-left">${prjData.PRJ_NM}</p>
                 <button type="button" class="bg-blue-400 text-white hover:bg-blue-dark font-bold py-2 px-4 rounded cursor-pointer" onclick="openModal()">프로젝트수정</button>
@@ -48,7 +48,7 @@ function main(prjData,profData,chatData){
 									  	</form>
 										<button onclick="saveChatList()" class="float-right bg-blue-400 text-white hover:bg-blue-dark font-bold py-2 px-4 m-3 rounded cursor-pointer">채팅저장</button>
 									</div>	
-                  <form name="chatSaveForm" method="POST" action="/editchat/save" enctype="multipart/form-data">
+                  <form name="chatSaveForm" method="POST" action="/chatEdit/save" enctype="multipart/form-data">
                     <input class="hidden" name="prjId" value="${prjData.PRJ_ID}">
                     <input class="hidden" name="chatSaveList" type="text" value="">
                     <input class="hidden" name="chatDeleteList" type="text" value="">
