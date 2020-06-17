@@ -178,7 +178,8 @@ const addChat = (chatSeq, msg, type, position, profId) => {
           reader.readAsDataURL(file);
            
           fileInput.id = `${type}_${chatSeq}`;
-          alert(fileInput.id);  
+          chatInfo.CHAT_MSG = file.name;
+          
           const fileSaveList  = document.querySelector('#fileSaveList');
           var newFileInput  = document.createElement("input");  
           newFileInput.id     = "fileInput";
@@ -192,7 +193,7 @@ const addChat = (chatSeq, msg, type, position, profId) => {
         
     }else {
         elmt = document.createElement("img");
-        elmt.src = msg;
+        elmt.src = `../uploads/${msg}`;
     }
     
     elmt.classList.add(type);
@@ -201,17 +202,16 @@ const addChat = (chatSeq, msg, type, position, profId) => {
   //유튜브 링크 
   }else if(type == "Youtu"){
 
-    addChat(chatSeq, msg,"Msg",position,profId);
-    
     //유튜브 형식이 아닌경우 메세지 처리 
     if(msg.indexOf("youtu.be") < 0){
+      addChat(chatSeq, msg,"Msg",position,profId);
       return;
     }
     
     //유튜브 ID 분리 
     const msgSplit = msg.split("/");
     const youtuId  = msgSplit[msgSplit.length-1];  //유튜브 링크 예시) https://youtu.be/CI0oF5RovCs 
-    alert(youtuId);
+    
     elmt = document.createElement("img");
     elmt.src = "https://img.youtube.com/vi/"+youtuId+"/0.jpg";
     elmt.onclick = () => { window.open(msg);};
@@ -342,14 +342,7 @@ const saveChatList = () => {
   chatSaveForm.submit();
 }
 
-/*
- * 이미지 파일 저장
-*/
-const saveImgFile = () => {
-  const chatSaveFile   = document.chatSaveFile;
-  
-  chatSaveFile.submit();
-}
+
 
 /**
  * 프로필 정보  

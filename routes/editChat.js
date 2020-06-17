@@ -40,6 +40,11 @@ router.get('/:id', function(req, res, next) {
      
       console.log(prjData);
 
+     if(is.empty(prjData)){
+       res.redirect( '/');
+       return; 
+     }
+     
      const sql = "SELECT PROF_ID, PROF_NM, POSITION, FILE_PATH FROM PROF_LIST WHERE PRJ_ID = ? ";   
      db.query(sql, [prjId], function(error, profData){
         if(error){
@@ -56,7 +61,7 @@ router.get('/:id', function(req, res, next) {
             }
 
             //console.log(chatData);
-             console.log("prjData여기여기111 : ", prjData);
+            //console.log("prjData여기여기111 : ", prjData);
           
             const title  = "Make Chat";
             const link   = ``;
@@ -80,20 +85,25 @@ router.post('/save', upload.array('img_file'), function(req, res, next){
 	const post = req.body;
   console.dir(post, { colors: true, depth: 1 });
   //console.log("post --> "+JSON.stringify(post));
+    
+  const prjId = post.prjId;
+  const chatSaveList   = JSON.parse(post.chatSaveList);
+  const chatDeleteList = JSON.parse(post.chatDeleteList);
   
-   //첨부파일 저장
+  //첨부파일 저장
   const files = req.files; 
   console.log("files",files);
   
   if(!is.empty(files)){
     files.forEach((file, index)=>{
-            console.log(`file inform : ${file.originalname},  ${file.filename},  ${file.mimetype},  ${file.size}`); 
+        //console.log(`file inform : ${file.originalname},  ${file.filename},  ${file.mimetype},  ${file.size}`);       
+        const result = chatSaveList.filter(chat => {
+            if(chat.CHAT_MSG == file.originalname){
+                chat.CHAT_MSG = file.filename;
+            }
+        });  
     });
   }
-    
-  const prjId = post.prjId;
-  const chatSaveList   = JSON.parse(post.chatSaveList);
-  const chatDeleteList = JSON.parse(post.chatDeleteList);
   
   let sqls = "";
   let params = [];

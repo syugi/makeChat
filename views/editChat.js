@@ -7,7 +7,7 @@ module.exports = {
 }
 
 function main(prjData,profData,chatData){
-  console.log("prjData여기여기 : ", prjData);
+  //console.log("prjData여기여기 : ", prjData);
 	// console.log(profData);
 	// console.log(chatData);
   
@@ -41,10 +41,10 @@ function main(prjData,profData,chatData){
                         </svg>
                       </button>
                     </div>  
-                    <form class="addChatForm h-10">      
+                    <form class="addChatForm h-10"> 
                         <img src="../images/icon_photo.png" alt="" class="float-left w-1/12 px-1 cursor-pointer" onclick="document.getElementById('fileInput').click();""/>
-                        <input type="text" id="chatInput" class="border border-blue float-left w-9/12 h-full">
-                        <button class="float-left p-2 w-2/12" id="btnAddChat">등록</button>
+												<input type="text" id="chatInput" class="border border-blue float-left w-9/12 h-full">
+												<button class="float-left p-2 w-2/12" id="btnAddChat">등록</button>
 									  	</form>
 										<button onclick="saveChatList()" class="float-right bg-blue-400 text-white hover:bg-blue-dark font-bold py-2 px-4 m-3 rounded cursor-pointer">채팅저장</button>
 									</div>	
@@ -52,7 +52,7 @@ function main(prjData,profData,chatData){
                     <input class="hidden" name="prjId" value="${prjData.PRJ_ID}">
                     <input class="hidden" name="chatSaveList" type="text" value="">
                     <input class="hidden" name="chatDeleteList" type="text" value="">
-                    <div id="fileSaveList" name="fileSaveList">
+                    <div id="fileSaveList" name="fileSaveList" class="hidden">
                       <input class="" id="fileInput" type="file" name="img_file" accept="image/*" onchange="handleFileAddChat(event);">   
                     </div>
                   </form>	
