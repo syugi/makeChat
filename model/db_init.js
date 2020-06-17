@@ -19,6 +19,7 @@ CREATE TABLE PROJECT_LIST(
             , PRJ_NM     varchar(20)   not null   
            , PRJ_DESC         varchar(1000) 
 ,REC_STAT varchar(1)
+,CHAT_MODE varchar(2)
             , CREATED_DT DATETIME not null default now()
             , primary key(PRJ_ID)
          )

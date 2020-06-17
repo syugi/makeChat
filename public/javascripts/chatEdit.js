@@ -27,8 +27,13 @@ const settingData = (prjInfo,profData,chatData) => {
   
   _activeProfId = profData[0].PROF_ID;
   
+	const mode = _prjInfo.CHAT_MODE;
+	const radio  = document.querySelector(`input[name="chatMode"][value="${mode}"]`);  //채팅실행모드 (1:탭 , 2:스크롤, 3:플레이) 
+	radio.checked = true; 
+//document.querySelector('input[name="radioName"]:checked').value;
+	
   chatData.forEach((data) => {
-    addChat(data.CHAT_SEQ, data.CHAT_MSG, data.CHAT_TYPE, data.POSITION, data.PROF_ID , 'N');
+    addChat(data.CHAT_SEQ, data.CHAT_MSG, data.CHAT_TYPE, data.POSITION, data.PROF_ID);
   });
   
 }

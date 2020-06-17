@@ -8,7 +8,7 @@ const is       = require('is-0');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   
-  const sql = "SELECT PRJ_ID, PRJ_NM, PRJ_DESC FROM PROJECT_LIST A WHERE REC_STAT <> 'D' ORDER BY PRJ_ID";
+  const sql = "SELECT PRJ_ID, PRJ_NM, PRJ_DESC , CHAT_MODE FROM PROJECT_LIST A WHERE REC_STAT <> 'D' ORDER BY PRJ_ID";
         
    db.query(sql, [], function(error, result){
       if(error){
@@ -55,8 +55,8 @@ router.post('/save', function(req, res, next){
   //Insert  
   if(is.empty(post.prjId)){
 
-    const insertProject = "INSERT INTO PROJECT_LIST ( PRJ_ID, PRJ_NM, PRJ_DESC , REC_STAT) VALUES (0, ?, ? , 'I')";
-    db.query(insertProject, [ post.prjNm, post.prjDesc], function(error, result){
+    const insertProject = "INSERT INTO PROJECT_LIST ( PRJ_ID, PRJ_NM, PRJ_DESC ,CHAT_MODE, REC_STAT) VALUES (0, ?, ? , ? , 'I')";
+    db.query(insertProject, [ post.prjNm, post.prjDesc, post.chatMode], function(error, result){
       if(error){
         throw error;
       }
@@ -71,8 +71,8 @@ router.post('/save', function(req, res, next){
 
   //Udate
   }else{
-    const updateProject = "UPDATE PROJECT_LIST SET PRJ_NM = ? , PRJ_DESC = ? WHERE PRJ_ID = ?";
-    db.query(updateProject, [ post.prjNm, post.prjDesc, post.prjId], function(error, result){
+    const updateProject = "UPDATE PROJECT_LIST SET PRJ_NM = ? , PRJ_DESC = ? , CHAT_MODE = ? WHERE PRJ_ID = ?";
+    db.query(updateProject, [ post.prjNm, post.prjDesc, post.chatMode, post.prjId], function(error, result){
       if(error){
         throw error;
       }
@@ -87,8 +87,8 @@ router.post('/modify', function(req, res, next){
   const post = req.body;
 	console.log("post --> "+JSON.stringify(post));
   
-  const updateProject = "UPDATE PROJECT_LIST SET PRJ_NM = ? , PRJ_DESC = ? WHERE PRJ_ID = ?";
-    db.query(updateProject, [ post.prjNm, post.prjDesc, post.prjId], function(error, result){
+  const updateProject = "UPDATE PROJECT_LIST SET PRJ_NM = ? , PRJ_DESC = ? , CHAT_MODE = ? WHERE PRJ_ID = ?";
+    db.query(updateProject, [ post.prjNm, post.prjDesc, post.chatMode, post.prjId], function(error, result){
       if(error){
         throw error;
       }

@@ -27,6 +27,10 @@ const openModal = (selectedPrjId) => {
     desc.value      = li.querySelector('div.prj_desc').innerText;
     title.innerHTML = "프로젝트 수정";
     
+		const mode    = li.querySelector('div.chat_mode').innerText;
+		const radio   = document.querySelector(`input[name="chatMode"][value="${mode}"]`);  //채팅실행모드 (1:탭 , 2:스크롤, 3:플레이) 
+		radio.checked = true; 
+		
   //생성
   }else{
 
@@ -42,6 +46,14 @@ const openModal = (selectedPrjId) => {
 
 const closeModal = () => {
   modal.classList.add("hidden");
+}
+
+const removeCheck = (prjId) => {
+	if (confirm("정말 삭제하시겠습니까??") == true){ 
+		 location.href=`/delete?id=${prjId}`;
+	}else{   
+	   return false;
+	}
 }
 
 function init(){

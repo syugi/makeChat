@@ -25,7 +25,8 @@ function main(prjData,profData,chatData){
   return `
         <div class="wrap bg-gray-300">
               <button type="button" class="bg-gray-800 text-white hover:bg-blue-dark font-bold py-2 px-4 rounded cursor-pointer" onclick="location.href='/'">돌아가기</button>
-              <div class="px-4 py-6">
+              <button type="button" class="bg-gray-800 text-white hover:bg-blue-dark font-bold py-2 px-4 rounded cursor-pointer" onclick="window.open('/chatRun/${prjData.PRJ_ID}?mode=${prjData.CHAT_MODE}')">미리보기</button>
+              <div class="px-4 py-6">
                 <p class="text-lg float-left">${prjData.PRJ_NM}</p>
                 <button type="button" class="bg-blue-400 text-white hover:bg-blue-dark font-bold py-2 px-4 rounded cursor-pointer" onclick="openModal()">프로젝트수정</button>
                 <p class="">${prjData.PRJ_DESC}</p>
@@ -81,13 +82,29 @@ function modal(prjData){
               <input class="hidden" id="modalPrjId" name="prjId" value="${prjData.PRJ_ID}">
               <div class="mb-4">
                 <label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">프로젝트 명</label>
-                <input class="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" id="mopdalPrjNm" name="prjNm" value="${prjData.PRJ_NM}">
+                <input class="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" id="mopdalPrjNm" name="prjNm" value="${prjData.PRJ_NM}" onfocus = "this.select()">
               </div>
 
               <div class="mb-4">
                 <label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">설명</label>
                 <input class="mb-1 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" id="modalPrjDesc" name="prjDesc" value="${prjData.PRJ_DESC}">
               </div>
+
+								<div class="mb-4">
+											<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">모드</label>
+											<label class="inline-flex items-center">
+												<input type="radio" class="form-radio" name="chatMode" value="1">
+												<span class="ml-2">탭</span>
+											</label>
+											<label class="inline-flex items-center ml-6">
+												<input type="radio" class="form-radio" name="chatMode" value="2">
+												<span class="ml-2">스크롤</span>
+											</label>
+											<label class="inline-flex items-center ml-6">
+												<input type="radio" class="form-radio" name="chatMode" value="3">
+												<span class="ml-2">플레이</span>
+											</label>
+							  </div>
 
               <div class="mt-8 text-right">
                 <button type="button" class="bg-white hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded shadow-sm mr-2" onClick="closeModal()" type="button" >

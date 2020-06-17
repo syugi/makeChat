@@ -10,8 +10,9 @@ const mysql    = require('mysql');
 router.get('/:id', function(req, res, next) {
   
    const prjId = req.params.id;
+   const mode  = req.query.mode;
   
-   const sql = "SELECT PRJ_ID, PRJ_NM, PRJ_DESC FROM PROJECT_LIST WHERE PRJ_ID = ? ";      
+   const sql = "SELECT PRJ_ID, PRJ_NM, PRJ_DESC , CHAT_MODE FROM PROJECT_LIST WHERE PRJ_ID = ? ";      
    db.query(sql, [prjId], function(error, prjData){
       if(error){
         throw error;
@@ -41,6 +42,10 @@ router.get('/:id', function(req, res, next) {
 
             //console.log(chatData);
             //console.log("prjData여기여기111 : ", prjData);
+          
+            if(!is.empty(mode)){
+              prjData[0].MODE = mode;  //채팅실행모드 (1:탭 , 2:스크롤, 3:플레이)
+             }
           
             const title  = prjData[0].PRJ_NM;
             const link   = ``;
