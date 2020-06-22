@@ -63,6 +63,14 @@ router.get('/:id', function(req, res, next) {
             //console.log(chatData);
             //console.log("prjData여기여기111 : ", prjData);
           
+						// const profObj = {
+						// 	PROF_ID   : 9999,
+						// 	PROF_NM   : "공지",
+						// 	POSITION  : "center",
+						// 	FILE_PATH : "icon_profile.jpg"
+						// }
+						// profData.push(profObj);
+					
             const title  = "Make Chat";
             const link   = ``;
             const body  = `${chatEdit.html(prjData[0],profData,chatData)}`;

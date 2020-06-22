@@ -71,7 +71,7 @@ function projectModal(){
 								<div class="mb-4">
 											<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">모드</label>
 											<label class="inline-flex items-center">
-												<input type="radio" class="form-radio" name="chatMode" value="1">
+												<input type="radio" class="form-radio" name="chatMode" value="1" checked>
 												<span class="ml-2">탭</span>
 											</label>
 											<label class="inline-flex items-center ml-6">

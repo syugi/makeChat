@@ -157,6 +157,15 @@ a {
    border-radius: 1rem 0.1rem 1rem 1rem; /*border-radius: 1rem 1rem 0.1rem;*/
 }
 
+.centerMsg{
+   float:left;
+   background:#fff;
+   clear: both;
+   /* border-radius: 0.1rem 1rem 1rem 1rem; */
+	 margin-left: auto;
+	 text-align: center;
+}
+
 .Img, .Youtu {
   clear: both;
   border-radius: 1rem;

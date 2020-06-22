@@ -115,7 +115,7 @@ const handleBtnAddChat = (e) => {
   const chatSeq  = getChatSeq();
   const recStat  = "I"; 
   let chatType   = "Msg"; 
-  
+ 
   if(chatMsg == "" || chatMsg == null){
     return;
   }
@@ -336,6 +336,10 @@ const addChat = (chatSeq, msg, type, position, profId) => {
  */
 const setProfile = (profId) =>  {
     
+		if(parseInt(profId) > 999){ //공지 
+			return;
+		}
+	
     const profInfo    = getProfInfo(profId);
     const imgPath     = profInfo.FILE_PATH;
     const profName    = profInfo.PROF_NM;
@@ -399,9 +403,9 @@ const saveChatList = () => {
 const getProfInfo = (profId) => {
   
   let profInfo = _profList.filter(function(prof){
-    return prof.PROF_ID === parseInt(profId);
+    return parseInt(prof.PROF_ID) === parseInt(profId);
   });
-  
+
   return profInfo[0]; 
 }
 

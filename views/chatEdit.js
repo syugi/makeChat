@@ -14,6 +14,7 @@ function main(prjData,profData,chatData){
 	// console.log(chatData);
   
   let list_prof = "";
+
   profData.forEach((data, i)=>{
     const active = i==0?'active':'';
     list_prof += `<div class="text-sm text-center mx-2">`;
