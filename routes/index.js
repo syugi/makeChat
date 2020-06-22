@@ -63,8 +63,8 @@ router.post('/save', function(req, res, next){
       
       const prjId = result.insertId;
       
-      addDefaultProfile(prjId, '선생님','left', 'profile_1.png' ,1);
-      addDefaultProfile(prjId,  '학생' ,'right', 'profile_2.png' ,2);
+      addDefaultProfile(prjId, '선생님','left', 'icon_profile.jpg' ,1);
+      addDefaultProfile(prjId,  '학생' ,'right', 'icon_profile.jpg' ,2);
       
       res.redirect( '/');
     });  

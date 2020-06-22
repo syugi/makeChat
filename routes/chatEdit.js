@@ -139,4 +139,37 @@ router.post('/save', upload.array('img_file'), function(req, res, next){
   }
 });
 
+
+router.post('/profSave', upload.array('img_file'), function(req, res, next){
+
+	const post = req.body;
+  console.dir(post, { colors: true, depth: 1 });
+  //console.log("post --> "+JSON.stringify(post));
+    
+	const prjId = post.prjId;
+	let  filePath = "icon_profile.jpg";
+	
+	//첨부파일 저장
+	const files = req.files; 
+	console.log("files",files);
+  
+	if(!is.empty(files)){
+		filePath = files[0].filename;
+	}
+	
+	let sqls = "";
+	let params = [];
+	
+	const insertSql = " INSERT INTO PROF_LIST ( PROF_ID, PRJ_ID, PROF_NM, POSITION, FILE_PATH) VALUES ( 0 , ? , ? , ?, ?); ";
+
+	db.query(insertSql , [ prjId, post.profNm, post.position, filePath], function(error, result){
+		if(error){
+			throw error;
+		}        
+		
+		 	 res.redirect( `/chatEdit/${prjId}`);
+	});
+	
+});
+
 module.exports = router;

@@ -1,7 +1,8 @@
 const profImgs   = document.querySelectorAll('.profImg');
 const modal      = document.querySelector('.projectModal');  
+const profModal  = document.querySelector('.profileModal');  
 const chatList   = document.querySelector('.chatList');  
-
+	
 let _prjInfo    = {};
 let _profList   = [];
 let _chats      = [];
@@ -14,6 +15,23 @@ const openModal = () => {
 
 const closeModal = () => {
   modal.classList.add("hidden");
+}
+
+const openModalProf = () => {
+	
+	const saveChat = _chats.filter(function(chat){
+    return chat.REC_STAT === 'I' || chat.REC_STAT === 'D';
+  });
+	
+	if(saveChat.length > 0){
+     alert("채팅저장 후 진행해주세요!");
+     return false;
+  }
+  profModal.classList.remove("hidden");
+}
+
+const closeModalProf = () => {
+  profModal.classList.add("hidden");
 }
 
 const settingData = (prjInfo,profData,chatData) => {
@@ -59,6 +77,24 @@ function handleChatListClick(event){
   // locaLine.classList.add("left","block");
   // li.appendChild(locaLine);
   // chatList.appendChild(li);
+}
+
+/**
+ * 프로필 이미지파일 
+ */
+const handleProfFile = (e) => {
+  // alert(e.target);
+
+  const profImage  = document.querySelector('#profImage');
+
+  const reader = new FileReader();
+  
+  const fileInput  = document.querySelector('#fileInputProf');
+  const file       = fileInput.files[0];
+
+  reader.onload = (e) => profImage.src = e.target.result;
+  reader.readAsDataURL(file);
+  
 }
 
 
@@ -330,11 +366,11 @@ const setProfile = (profId) =>  {
  * 채팅 저장  
  */
 const saveChatList = () => {
- 
-  const chatSaveForm   = document.chatSaveForm;
+
+	const chatSaveForm   = document.chatSaveForm;
   const chatSaveList   = chatSaveForm.chatSaveList;
-  const chatDeleteList = chatSaveForm.chatDeleteList
-  
+  const chatDeleteList = chatSaveForm.chatDeleteList;
+	
   const saveChat = _chats.filter(function(chat){
     return chat.REC_STAT === 'I';
   });

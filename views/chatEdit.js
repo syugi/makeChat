@@ -2,7 +2,9 @@ module.exports = {
 	
   html : function(prjData,profData,chatData){
 		  return main(prjData,profData,chatData)
-           + modal(prjData);
+           + projectModal(prjData)
+           + profileModal(prjData);
+    
   }
 }
 
@@ -36,7 +38,7 @@ function main(prjData,profData,chatData){
 									<div class="chatInputForm flex flex-col clear-both bg-white">
 										<div class="profList flex flex-row p-2 overflow-auto w-0 min-w-full">
 											${list_prof}   
-                      <button class="flex flex-shrink-0 focus:outline-none block text-gray-500 w-8 mx-2" type="button">
+                      <button class="flex flex-shrink-0 focus:outline-none block text-gray-500 w-8 mx-2" type="button"  onclick="openModalProf()">
                         <svg class="w-full h-full fill-current" viewBox="0 0 24 24">
                            <path d="M17 11a1 1 0 0 1 0 2h-4v4a1 1 0 0 1-2 0v-4H7a1 1 0 0 1 0-2h4V7a1 1 0 0 1 2 0v4h4z"></path>
                         </svg>
@@ -63,7 +65,7 @@ function main(prjData,profData,chatData){
       `;
 }
 
-function modal(prjData){
+function projectModal(prjData){
     return `
     <div style=" background-color: rgba(0, 0, 0, 0.8)" class="projectModal fixed z-40 top-0 right-0 left-0 bottom-0 h-full w-full hidden">
 			<div class="p-4 max-w-xl mx-auto relative absolute left-0 right-0 overflow-hidden mt-24">
@@ -111,6 +113,74 @@ function modal(prjData){
                   Cancel
                 </button>	
                 <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 border border-gray-700 rounded shadow-sm" id="btnAddProject" name="submit">
+                  Save
+                </button>	
+              </div>
+          </form>
+        </div>
+			</div>
+		</div>
+    `
+  
+}
+
+
+function profileModal(prjData){
+    return `
+    <div style=" background-color: rgba(0, 0, 0, 0.8)" class="profileModal fixed z-40 top-0 right-0 left-0 bottom-0 h-full w-full hidden">
+			<div class="p-4 max-w-xl mx-auto relative absolute left-0 right-0 overflow-hidden mt-24">
+				<div class="shadow absolute right-0 top-0 w-10 h-10 rounded-full bg-white text-gray-500 hover:text-gray-800 inline-flex items-center justify-center cursor-pointer" onclick="closeModalProf()">
+					<svg class="fill-current w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+						<path
+							d="M16.192 6.344L11.949 10.586 7.707 6.344 6.293 7.758 10.535 12 6.293 16.242 7.707 17.656 11.949 13.414 16.192 17.656 17.606 16.242 13.364 12 17.606 7.758z" />
+					</svg>
+				</div>
+
+				<div class="shadow w-full rounded-lg bg-white overflow-hidden w-full block p-8 text-center">					
+					<h2 class="font-bold text-2xl mb-6 text-gray-800 border-b pb-2" id="modalTitle">대화자 추가</h2>
+          <form method="POST" action="/chatEdit/profSave" enctype="multipart/form-data" >
+              <input class="hidden" id="modalPrjId" name="prjId" value="${prjData.PRJ_ID}">
+
+              <div class="mx-auto w-32 h-32 mb-2 border rounded-full relative bg-gray-100 mb-4 shadow-inset">  
+								<img id="profImage" class="object-cover w-full h-32 rounded-full" src="../uploads/icon_profile.jpg" />
+							</div>
+
+              <label 
+								for="fileInputProf"
+								type="button"
+								class="mb-4 cursor-pointer inine-flex justify-between items-center focus:outline-none border py-2 px-4 rounded-lg shadow-sm text-left text-gray-600 bg-white hover:bg-gray-100 font-medium"
+							  >
+								<svg xmlns="http://www.w3.org/2000/svg" class="inline-flex flex-shrink-0 w-6 h-6 -mt-1 mr-1" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+									<rect x="0" y="0" width="24" height="24" stroke="none"></rect>
+									<path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
+									<circle cx="12" cy="13" r="3" />
+								</svg>						
+								Browse Photo
+							</label>
+<input name="img_file" id="fileInputProf" accept="image/*" class="hidden" type="file" onchange="handleProfFile(event);">
+
+              <div class="mb-4">
+								<input class="text-center mx-auto mt-1 w-64 px-4 py-3 rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium" type="text" id="mopdalProfNm" name="profNm" value="" placeholder = "이름" >
+              </div>
+
+								<div class="mb-4">
+											<label class="text-gray-800 block mt-2 mb-1 font-bold text-sm uppercase tracking-wide">위치</label>
+											<label class="inline-flex items-center">
+												<input type="radio" class="form-radio" name="position" value="left">
+												<span class="ml-2">왼쪽</span>
+											</label>
+											<label class="inline-flex items-center ml-6">
+												<input type="radio" class="form-radio" name="position" value="right" checked>
+												<span class="ml-2">오른쪽</span>
+											</label>
+											
+							  </div>
+
+              <div class="mt-8 text-right">
+                <button type="button" class="bg-white hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded shadow-sm mr-2" onClick="closeModalProf()" type="button" >
+                  Cancel
+                </button>	
+                <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 border border-gray-700 rounded shadow-sm" id="btnAddProfile" name="submit">
                   Save
                 </button>	
               </div>
