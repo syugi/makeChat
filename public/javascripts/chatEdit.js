@@ -9,29 +9,38 @@ let _chats      = [];
 
 let _activeProfId = "";
 
-const openModal = () => {
-  modal.classList.remove("hidden");
-}
-
-const closeModal = () => {
-  modal.classList.add("hidden");
-}
-
-const openModalProf = () => {
-	
-	const saveChat = _chats.filter(function(chat){
+const changeCheck = () => {
+	const chgChat = _chats.filter(function(chat){
     return chat.REC_STAT === 'I' || chat.REC_STAT === 'D';
   });
 	
-	if(saveChat.length > 0){
-     alert("채팅저장 후 진행해주세요!");
-     return false;
-  }
-  profModal.classList.remove("hidden");
+	if(chgChat.length > 0){
+		alert("채팅 저장 후 진행해주세요!");
+		return false;
+	}
+	
+	return true;
+	
+}
+
+const openModal = () => {
+	if(changeCheck()){
+		modal.classList.remove("hidden");
+	}
+}
+
+const closeModal = () => {
+	modal.classList.add("hidden");
+}
+
+const openModalProf = () => {
+	if(changeCheck()){
+  	profModal.classList.remove("hidden");
+	}
 }
 
 const closeModalProf = () => {
-  profModal.classList.add("hidden");
+	profModal.classList.add("hidden");
 }
 
 const settingData = (prjInfo,profData,chatData) => {
@@ -48,7 +57,6 @@ const settingData = (prjInfo,profData,chatData) => {
 	const mode = _prjInfo.CHAT_MODE;
 	const radio  = document.querySelector(`input[name="chatMode"][value="${mode}"]`);  //채팅실행모드 (1:탭 , 2:스크롤, 3:플레이) 
 	radio.checked = true; 
-//document.querySelector('input[name="radioName"]:checked').value;
 	
   chatData.forEach((data) => {
     addChat(data.CHAT_SEQ, data.CHAT_MSG, data.CHAT_TYPE, data.POSITION, data.PROF_ID);
