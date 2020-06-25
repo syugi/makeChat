@@ -10,7 +10,7 @@ module.exports = {
 
 function main(prjData,profData,chatData){
   //console.log("prjData여기여기 : ", prjData);
-	// console.log(profData);
+	// console.log(profData);  
 	// console.log(chatData);
   
   let list_prof = "";
