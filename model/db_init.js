@@ -12,15 +12,28 @@ const db =  mysql.createConnection({
 //데이터베이스 생성!
 //CREATE SCHEMA  CHAT: 
 
+const create_user = `
+CREATE TABLE USER(
+              USER_ID           varchar(160)   not null   
+            , PASSWORD      varchar(512)   not null   
+            , REC_STAT         varchar(1)
+            , CREATED_DT   DATETIME not null default now()
+            , primary key(USER_ID)
+         )
+         comment = '사용자'
+         default charset = utf8
+         engine=InnoDB `;
+
 //프로젝트리스트 테이블 생성 
 const create_projectList = `
 CREATE TABLE PROJECT_LIST(
-              PRJ_ID          INT NOT NULL AUTO_INCREMENT
-            , PRJ_NM     varchar(20)   not null   
-           , PRJ_DESC         varchar(1000) 
-,REC_STAT varchar(1)
-,CHAT_MODE varchar(2)
-            , CREATED_DT DATETIME not null default now()
+              PRJ_ID              INT NOT NULL AUTO_INCREMENT
+            , USER_ID           varchar(50)   not null   
+            , PRJ_NM            varchar(20)   not null   
+            , PRJ_DESC         varchar(1000) 
+            , REC_STAT         varchar(1)
+            , CHAT_MODE   varchar(2)
+            , CREATED_DT   DATETIME not null default now()
             , primary key(PRJ_ID)
          )
          comment = '프로젝트 리스트'
@@ -62,15 +75,15 @@ db.connect(function(err) {
   if (err) throw err;
   console.log("DB Connected!");
 	
-  //dropTable("PROJECT_LIST");
-  //dropTable("ATCH_FILE_LIST");
- // dropTable("PROF_LIST");
+	// dropTable("PROJECT_LIST");
+	// dropTable("ATCH_FILE_LIST");
+	// dropTable("PROF_LIST");
+	// dropTable("CHAT_LIST");
   
-  //createTable("PROJECT_LIST", create_projectList);
-
-  //createTable("CHAT_LIST", create_chatList);
-
+  createTable("PROJECT_LIST", create_projectList);
+  createTable("CHAT_LIST", create_chatList);
   createTable("PROF_LIST", create_profList);
+	createTable("USER", create_user);
 
   //addDefaultProfile('1', '선생님','left', 'https://randomuser.me/api/portraits/women/12.jpg' , '1');
   //addDefaultProfile('1', '학생' ,'right', 'https://randomuser.me/api/portraits/women/12.jpg' , '2');

@@ -2,11 +2,96 @@ const express  = require('express');
 const router   = express.Router();
 const template = require('../views/template/template.js');		
 const index    = require('../views/index.js');		
+const login    = require('../views/login.js');	
 const db       = require('../model/db_conn.js');
 const is       = require('is-0');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  
+	res.redirect( '/login');
+	
+});
+
+router.get('/login', function(req, res, next) {
+	
+	const title  = "Make Chat :: LOGIN";
+	const link   = ``;
+	const body  = `${login.html()}`;
+	const script = ``;
+	const html   = template.HTML(title,link, body,script);
+	res.send(html);
+
+});
+
+router.get('/signup', function(req, res, next){
+ 
+	const error = req.query.error;
+	console.log("error --> "+error);
+	
+	const post = req.body;
+	console.log("post --> "+JSON.stringify(post));
+
+  const title  = "Make Chat :: SIGN UP";
+	const link   = ``;
+	const body  = `${login.signUp()}`;
+	const script = `<script src="/javascripts/login.js"></script>`;
+	const html   = template.HTML(title,link, body,script);
+	res.send(html);
+	
+});
+
+router.post('/login', function(req, res, next){
+ 
+	const post = req.body;
+	console.log("post --> "+JSON.stringify(post));
+
+	const sql = "SELECT USER_ID FROM USER A WHERE USER_ID = ?";
+        
+  db.query(sql, [post.id], function(error, result){
+	if(error){
+		throw error;
+	}
+		
+  	res.redirect( '/list');
+	});
+	
+});
+
+router.post('/saveUser', function(req, res, next){
+ 
+	const post = req.body;
+	console.log("post --> "+JSON.stringify(post));
+
+	const sql = "SELECT USER_ID FROM USER A WHERE USER_ID = ?";
+        
+  db.query(sql, [post.id], function(error, result){
+	if(error){
+		throw error;
+	}
+		 
+		if(!is.empty(result)){
+				res.redirect( '/signup?error=id');
+			
+		}else{
+		
+			const insertUser = "INSERT INTO USER ( USER_ID, PASSWORD, REC_STAT) VALUES (?, ? , 'I')";
+			db.query(insertUser, [ post.id, post.password], function(error, result){
+					if(error){
+						throw error;
+					}
+				
+					res.redirect( '/login');
+			});  
+			
+		}
+		
+	});
+
+});
+
+
+router.get('/list', function(req, res, next) {
   
   const sql = "SELECT PRJ_ID, PRJ_NM, PRJ_DESC , CHAT_MODE FROM PROJECT_LIST A WHERE REC_STAT <> 'D' ORDER BY PRJ_ID";
         
@@ -40,7 +125,7 @@ router.get('/delete', function(req, res, next) {
      
      console.log(result);
 
-      res.redirect( '/');
+      res.redirect( '/list');
      
    });  
 
@@ -66,7 +151,7 @@ router.post('/save', function(req, res, next){
       addDefaultProfile(prjId, '선생님','left', 'icon_profile.jpg' ,1);
       addDefaultProfile(prjId,  '학생' ,'right', 'icon_profile.jpg' ,2);
       
-      res.redirect( '/');
+      res.redirect( '/list');
     });  
 
   //Udate
@@ -76,7 +161,7 @@ router.post('/save', function(req, res, next){
       if(error){
         throw error;
       }
-        res.redirect( '/');
+        res.redirect( '/list');
     });  
   }  
   

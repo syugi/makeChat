@@ -34,8 +34,9 @@ function main(prjList){
                 <span class="text-lg">프로젝트 리스트</span>
                 <button type="button" class="bg-blue-600 text-white hover:bg-blue-dark font-bold py-2 px-4 rounded m-3 cursor-pointer" onclick="openModal()">채팅 프로젝트 만들기 </button> 
                 <div class="w-full md:w-2/3">
-                  ${list}
-                </div>
+										${list}
+									 <!-- ${prjList.size > 0 ? list : ''} -->
+								</div>
               </div>
         </div>
       `;
