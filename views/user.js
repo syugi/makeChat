@@ -1,6 +1,6 @@
 module.exports = {
 	
-  html : function(){
+  login : function(){
 		  return login();
   },
 	signUp : function(){
@@ -15,12 +15,12 @@ function login(){
             <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
                 <div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
                     <h1 class="mb-8 text-3xl text-center">LOGIN</h1>
-                    <form class="" method="POST" action="/login" >
+                    <form class="" method="POST" action="/user/login" >
 												<input 
 														type="text"
 														class="block border border-gray-300 w-full p-3 rounded mb-4"
 														name="id"
-														placeholder="EMAIL" />
+														placeholder="Email" />
 
 												<input 
 														type="password"
@@ -33,7 +33,7 @@ function login(){
                 </div>
 
                 <div class="text-grey-dark mt-6">
-									<a class="no-underline border-b border-blue-700 text-blue-700" href="/signup">회원가입</a>
+									<a class="no-underline border-b border-blue-700 text-blue-700" href="/user/signup">회원가입</a>
                 </div>
             </div>
         </div>
@@ -48,12 +48,12 @@ function signUp(){
             <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
                 <div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
                     <h1 class="mb-8 text-3xl text-center">Sign up</h1>
-                    <form class="" method="POST" onsubmit="return validate();" action="/saveUser" >
+                    <form class="" method="POST" onsubmit="return validate();" action="/login/saveUser" >
 											<input 
 													type="text"
 													class="block border border-grey-light w-full p-3 rounded mb-4"
 													name="id" id="email"
-													placeholder="EMAIL" />
+													placeholder="Email" />
 
 											<input 
 													type="password"
@@ -82,7 +82,7 @@ function signUp(){
 
                 <div class="text-grey-dark mt-6">
                     Already have an account? 
-                    <a class="no-underline border-b border-blue-700 text-blue-700" href="/login">
+                    <a class="no-underline border-b border-blue-700 text-blue-700" href="/user/login">
                         Log in
                     </a>.
                 </div>

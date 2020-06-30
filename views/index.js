@@ -13,7 +13,7 @@ function main(prjList){
   prjList.forEach((data)=>{
     list += `<li class="border-gray-400 flex flex-row mb-2" id=${data.PRJ_ID} >`;
     list += `<div class="select-none cursor-pointer bg-gray-200 rounded-md flex flex-1 items-center p-4  transition duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
-                <div class="hidden flex flex-col rounded-md w-10 h-10 bg-gray-300 justify-center items-center mr-4">${data.PRJ_ID}</div>
+									<div class="hidden flex flex-col rounded-md w-10 h-10 bg-gray-300 justify-center items-center mr-4">${data.PRJ_ID}</div>
                 <div class="flex-1 pl-1 mr-16 " onClick="location.href='/chatEdit/${data.PRJ_ID}'">
                   <div class="font-medium mb-2 prj_nm">${data.PRJ_NM}</div>
                   <div class="text-gray-600 text-sm prj_desc">${data.PRJ_DESC}</div>
@@ -31,6 +31,11 @@ function main(prjList){
   return `
         <div class="wrap">
               <div class="px-4 py-6">
+                <div>
+										  <a class="no-underline border-b border-blue-700 text-blue-700" href="/user/logout">
+                        Log Out
+                    </a>
+									</div>
                 <span class="text-lg">프로젝트 리스트</span>
                 <button type="button" class="bg-blue-600 text-white hover:bg-blue-dark font-bold py-2 px-4 rounded m-3 cursor-pointer" onclick="openModal()">채팅 프로젝트 만들기 </button> 
                 <div class="w-full md:w-2/3">

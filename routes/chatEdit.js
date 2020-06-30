@@ -30,10 +30,11 @@ const upload = multer({
 /* GET home page. */
 router.get('/:id', function(req, res, next) {
   
-   const prjId = req.params.id;
-  
-   const sql = "SELECT PRJ_ID, PRJ_NM, PRJ_DESC , CHAT_MODE FROM PROJECT_LIST WHERE PRJ_ID = ? ";      
-   db.query(sql, [prjId], function(error, prjData){
+	const userId = req.session.user_id;
+   const prjId = req.params.id;
+   
+   const sql = "SELECT PRJ_ID, USER_ID, PRJ_NM, PRJ_DESC , CHAT_MODE FROM PROJECT_LIST WHERE USER_ID = ? AND PRJ_ID = ? ";      
+   db.query(sql, [userId,prjId], function(error, prjData){
       if(error){
         throw error;
       }

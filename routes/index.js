@@ -1,101 +1,29 @@
 const express  = require('express');
 const router   = express.Router();
 const template = require('../views/template/template.js');		
-const index    = require('../views/index.js');		
-const login    = require('../views/login.js');	
+const index    = require('../views/index.js');	
 const db       = require('../model/db_conn.js');
 const is       = require('is-0');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   
-	res.redirect( '/login');
-	
-});
-
-router.get('/login', function(req, res, next) {
-	
-	const title  = "Make Chat :: LOGIN";
-	const link   = ``;
-	const body  = `${login.html()}`;
-	const script = ``;
-	const html   = template.HTML(title,link, body,script);
-	res.send(html);
-
-});
-
-router.get('/signup', function(req, res, next){
- 
-	const error = req.query.error;
-	console.log("error --> "+error);
-	
-	const post = req.body;
-	console.log("post --> "+JSON.stringify(post));
-
-  const title  = "Make Chat :: SIGN UP";
-	const link   = ``;
-	const body  = `${login.signUp()}`;
-	const script = `<script src="/javascripts/login.js"></script>`;
-	const html   = template.HTML(title,link, body,script);
-	res.send(html);
-	
-});
-
-router.post('/login', function(req, res, next){
- 
-	const post = req.body;
-	console.log("post --> "+JSON.stringify(post));
-
-	const sql = "SELECT USER_ID FROM USER A WHERE USER_ID = ?";
-        
-  db.query(sql, [post.id], function(error, result){
-	if(error){
-		throw error;
+	console.log("로그인 !확인! req.session ====> ",req.session);
+	if(req.session.isLogined){
+		res.redirect( '/list');
+	}else{
+		res.redirect( '/user/login');	
 	}
-		
-  	res.redirect( '/list');
-	});
 	
 });
-
-router.post('/saveUser', function(req, res, next){
- 
-	const post = req.body;
-	console.log("post --> "+JSON.stringify(post));
-
-	const sql = "SELECT USER_ID FROM USER A WHERE USER_ID = ?";
-        
-  db.query(sql, [post.id], function(error, result){
-	if(error){
-		throw error;
-	}
-		 
-		if(!is.empty(result)){
-				res.redirect( '/signup?error=id');
-			
-		}else{
-		
-			const insertUser = "INSERT INTO USER ( USER_ID, PASSWORD, REC_STAT) VALUES (?, ? , 'I')";
-			db.query(insertUser, [ post.id, post.password], function(error, result){
-					if(error){
-						throw error;
-					}
-				
-					res.redirect( '/login');
-			});  
-			
-		}
-		
-	});
-
-});
-
 
 router.get('/list', function(req, res, next) {
   
-  const sql = "SELECT PRJ_ID, PRJ_NM, PRJ_DESC , CHAT_MODE FROM PROJECT_LIST A WHERE REC_STAT <> 'D' ORDER BY PRJ_ID";
+	const userId = req.session.user_id;
+	
+  const sql = "SELECT PRJ_ID, PRJ_NM, PRJ_DESC , CHAT_MODE FROM PROJECT_LIST A WHERE USER_ID = ? AND REC_STAT <> 'D' ORDER BY PRJ_ID";
         
-   db.query(sql, [], function(error, result){
+   db.query(sql, [userId], function(error, result){
       if(error){
         throw error;
       }
@@ -115,10 +43,11 @@ router.get('/list', function(req, res, next) {
 
 router.get('/delete', function(req, res, next) {
   
-   //const sql = "DELETE FROM PROJECT_LIST WHERE PRJ_ID = ?";
-  const sql = "UPDATE PROJECT_LIST SET REC_STAT = 'D' WHERE PRJ_ID = ?";
+	const userId = req.session.user_id;
+	
+  const sql = "UPDATE PROJECT_LIST SET REC_STAT = 'D' WHERE USER_ID = ? AND PRJ_ID = ?";
         
-   db.query(sql, [req.query.id], function(error, result){
+   db.query(sql, [userId,req.query.id], function(error, result){
       if(error){
         throw error;
       }
@@ -136,12 +65,13 @@ router.post('/save', function(req, res, next){
 	const post = req.body;
 	console.log("post --> "+JSON.stringify(post));
 	
+	const userId = req.session.user_id;
   
   //Insert  
   if(is.empty(post.prjId)){
 
-    const insertProject = "INSERT INTO PROJECT_LIST ( PRJ_ID, PRJ_NM, PRJ_DESC ,CHAT_MODE, REC_STAT) VALUES (0, ?, ? , ? , 'I')";
-    db.query(insertProject, [ post.prjNm, post.prjDesc, post.chatMode], function(error, result){
+    const insertProject = "INSERT INTO PROJECT_LIST ( PRJ_ID, USER_ID, PRJ_NM, PRJ_DESC ,CHAT_MODE, REC_STAT) VALUES (0, ?, ?, ? , ? , 'I')";
+    db.query(insertProject, [ userId, post.prjNm, post.prjDesc, post.chatMode], function(error, result){
       if(error){
         throw error;
       }
@@ -156,8 +86,8 @@ router.post('/save', function(req, res, next){
 
   //Udate
   }else{
-    const updateProject = "UPDATE PROJECT_LIST SET PRJ_NM = ? , PRJ_DESC = ? , CHAT_MODE = ? WHERE PRJ_ID = ?";
-    db.query(updateProject, [ post.prjNm, post.prjDesc, post.chatMode, post.prjId], function(error, result){
+    const updateProject = "UPDATE PROJECT_LIST SET PRJ_NM = ? , PRJ_DESC = ? , CHAT_MODE = ? WHERE USER_ID = ? AND PRJ_ID = ?";
+    db.query(updateProject, [ post.prjNm, post.prjDesc, post.chatMode, userId, post.prjId], function(error, result){
       if(error){
         throw error;
       }
@@ -172,8 +102,10 @@ router.post('/modify', function(req, res, next){
   const post = req.body;
 	console.log("post --> "+JSON.stringify(post));
   
-  const updateProject = "UPDATE PROJECT_LIST SET PRJ_NM = ? , PRJ_DESC = ? , CHAT_MODE = ? WHERE PRJ_ID = ?";
-    db.query(updateProject, [ post.prjNm, post.prjDesc, post.chatMode, post.prjId], function(error, result){
+	const userId = req.session.user_id;
+	
+  const updateProject = "UPDATE PROJECT_LIST SET PRJ_NM = ? , PRJ_DESC = ? , CHAT_MODE = ? WHERE USER_ID = ? AND PRJ_ID = ?";
+    db.query(updateProject, [ post.prjNm, post.prjDesc, post.chatMode, userId, post.prjId], function(error, result){
       if(error){
         throw error;
       }
