@@ -138,11 +138,10 @@ function profileModal(prjData){
 				</div>
 
 				<div class="shadow w-full rounded-lg bg-white overflow-hidden w-full block p-8 text-center">					
-					<h2 class="font-bold text-2xl mb-6 text-gray-800 border-b pb-2" id="modalProfTitle">대화자 추가</h2>
+					<h2 class="font-bold text-2xl mb-6 text-gray-800 border-b pb-2" id="modalTitle">대화자 추가</h2>
           <form method="POST" action="/chatEdit/profSave" enctype="multipart/form-data" >
               <input class="hidden" id="modalPrjId" name="prjId" value="${prjData.PRJ_ID}">
-              <input class="hidden" id="modalProfId" name="profId" value="">
-							<input class="hidden" id="modalProfFilePath" name="filePath" value="">
+              <input class="hidden" id="modalProfId" name="prfId" value="">
 
               <div class="mx-auto w-32 h-32 mb-2 border rounded-full relative bg-gray-100 mb-4 shadow-inset">  
 								<img id="profImage" class="object-cover w-full h-32 rounded-full" src="../uploads/icon_profile.jpg" />

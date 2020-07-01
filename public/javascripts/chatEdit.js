@@ -33,9 +33,41 @@ const closeModal = () => {
 	modal.classList.add("hidden");
 }
 
-const openModalProf = () => {
+const openModalProf = (selectProfId) => {
+	
+	const title          = document.getElementById('modalProfTitle');
+	const profId         = document.getElementById('modalProfId');
+  const profImage      = document.getElementById('profImage');
+	const filePath       = document.getElementById('modalProfFilePath');
+  const profNm         = document.getElementById('mopdalProfNm');
+	let position = "";
+	
 	if(changeCheck()){
-  	profModal.classList.remove("hidden");
+
+		if(selectProfId === undefined){
+
+			title.innerHTML  = "대화자 추가";
+			profId.value     = "";
+			profImage.src    = "../uploads/"+"icon_profile.jpg";
+			filePath.value   = "icon_profile.jpg";
+			profNm.value     = "";
+		  position         = "right"; 
+			
+		}else{
+			const profInfo = getProfInfo(selectProfId);
+			title.innerHTML  = "대화자 편집";
+			profId.value     = profInfo.PROF_ID;
+			profImage.src    = "../uploads/"+profInfo.FILE_PATH;
+			filePath.value   = profInfo.FILE_PATH;
+			profNm.value     = profInfo.PROF_NM;
+			position         = profInfo.POSITION;
+		
+		}
+			
+		const radio   = document.querySelector(`input[name="position"][value="${position}"]`);  //채팅실행모드 (1:탭 , 2:스크롤, 3:플레이) 
+		radio.checked = true; 
+		
+		profModal.classList.remove("hidden");
 	}
 }
 

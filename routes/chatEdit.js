@@ -156,7 +156,9 @@ router.post('/profSave', upload.array('img_file'), function(req, res, next){
   //console.log("post --> "+JSON.stringify(post));
     
 	const prjId = post.prjId;
-	let  filePath = "icon_profile.jpg";
+	const profId = post.profId;
+	//let  filePath = "icon_profile.jpg";
+	let filePath = post.filePath;
 	
 	//첨부파일 저장
 	const files = req.files; 
@@ -169,9 +171,16 @@ router.post('/profSave', upload.array('img_file'), function(req, res, next){
 	let sqls = "";
 	let params = [];
 	
-	const insertSql = " INSERT INTO PROF_LIST ( PROF_ID, PRJ_ID, PROF_NM, POSITION, FILE_PATH) VALUES ( 0 , ? , ? , ?, ?); ";
-
-	db.query(insertSql , [ prjId, post.profNm, post.position, filePath], function(error, result){
+	let sql = "";
+	if(is.empty(profId)){
+		sql = " INSERT INTO PROF_LIST ( PROF_ID, PRJ_ID, PROF_NM, POSITION, FILE_PATH) VALUES ( 0 , ? , ? , ?, ?); ";
+		params = [ prjId, post.profNm, post.position, filePath];
+	}else{
+		sql = " UPDATE PROF_LIST SET PROF_NM = ? , POSITION = ? , FILE_PATH = ?  WHERE PRJ_ID = ? AND PROF_ID = ?; ";
+		params = [ post.profNm, post.position, filePath, prjId, profId];
+	}
+	
+	db.query(sql , params, function(error, result){
 		if(error){
 			throw error;
 		}        
